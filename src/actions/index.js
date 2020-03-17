@@ -10,7 +10,12 @@ export const RECEIVE_TEAMS_STATS_DRAW_HOME = "RECEIVE_TEAMS_STATS_DRAW_HOME";
 export const RECEIVE_TEAMS_STATS_DRAW_AWAY = "RECEIVE_TEAMS_STATS_DRAW_AWAY";
 export const RECEIVE_TEAMS_STATS_LOSE_HOME = "RECEIVE_TEAMS_STATS_LOSE_HOME";
 export const RECEIVE_TEAMS_STATS_LOSE_AWAY = "RECEIVE_TEAMS_STATS_LOSE_AWAy";
+export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
 
+export const receivedLeague = json => ({
+  type: RECEIVE_LEAGUE,
+  json: json
+});
 
 export const requestLeaguesList = () => ({
   type: REQUEST_LEAGUES_LIST
@@ -21,7 +26,7 @@ export const receivedLeaguesList = json => ({
   json: json
 });
 
-export const requestTeamsDetail = (leagueId) => ({
+export const requestTeamsDetail = leagueId => ({
   type: REQUEST_TEAMS_DETAIL,
   leagueId
 });
@@ -70,20 +75,26 @@ export const receivedTeamsStatLoseAway = json => ({
 // API Call
 
 export function fetchLeaguesList() {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch(requestLeaguesList());
     dispatch(requestTeamsDetail());
     dispatch(requestTeamsStat());
     const api = false;
     if (api) {
-      return axios
-        ({ method: 'get', url:'https://api-football-v1.p.rapidapi.com/v2/leagues/', headers: { "x-rapidapi-host": "api-football-v1.p.rapidapi.com", "x-rapidapi-key": "4dee647009mshd9a77b663ece0e7p136dbejsn22ccc6e7749e"}})
+      return axios({
+        method: "get",
+        url: "https://api-football-v1.p.rapidapi.com/v2/leagues/",
+        headers: {
+          "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+          "x-rapidapi-key": ""
+        }
+      })
         .then(res => {
-          let leagues = res.data.api.leagues
-          dispatch(receivedLeaguesList(leagues));
+          let leagues = res.data.api.leagues;
           /** To initially load the first league details into the details component */
           dispatch(getTeamsDetailById(leagues[0].league_id));
           //dispatch(getTeamsStats(leagues[0].league_id, leagues[0].league_id[357].team_id[19]));
+          dispatch(getTeamsStats(leagues[0].league_id, 19));
           dispatch(receivedLeaguesList(leagues));
         })
         .catch(e => {
@@ -93,7 +104,7 @@ export function fetchLeaguesList() {
       return axios
         .get("https://www.api-football.com/demo/api/v2/leagues")
         .then(res => {
-          let leagues = res.data.api.leagues
+          let leagues = res.data.api.leagues;
           /** To initially load the first league details into the details component */
           dispatch(getTeamsDetailById(leagues[0].league_id));
           dispatch(getTeamsStats(leagues[0].league_id, 19));
@@ -109,24 +120,31 @@ export function fetchLeaguesList() {
 // API Call
 
 export function getTeamsDetailById(id) {
-  return function (dispatch) {
+  return function(dispatch) {
     const api = false;
     if (api) {
-      return axios
-        ({ method: 'get', url:`https://api-football-v1.p.rapidapi.com/v2/teams/league/${id}`, headers: { "x-rapidapi-host": "api-football-v1.p.rapidapi.com", "x-rapidapi-key": "4dee647009mshd9a77b663ece0e7p136dbejsn22ccc6e7749e"}})
+      return axios({
+        method: "get",
+        url: `https://api-football-v1.p.rapidapi.com/v2/teams/league/${id}`,
+        headers: {
+          "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+          "x-rapidapi-key": ""
+        }
+      })
         .then(res => {
-          let teams = res.data.api.teams
+          let teams = res.data.api.teams;
           dispatch(receivedTeamsDetail(teams));
         })
         .catch(e => {
           console.log(e);
         });
     } else {
-        return axios
+      return axios
         .get(`https://www.api-football.com/demo/api/v2/teams/league/${id}`)
         .then(res => {
-          let teams = res.data.api.teams
+          let teams = res.data.api.teams;
           dispatch(receivedTeamsDetail(teams));
+          dispatch(receivedLeague(id));
         })
         .catch(e => {
           console.log(e);
@@ -135,40 +153,57 @@ export function getTeamsDetailById(id) {
   };
 }
 
-export function getTeamsStats(league,team) {
-  return function (dispatch) {
+export function getTeamsStats(league, team) {
+  return function(dispatch) {
     const api = false;
-    if (api){
-      return axios
-      ({method: 'get', url:`https://api-football-v1.p.rapidapi.com/v2/statistics/${league}/${team}`, headers: { "x-rapidapi-host": "api-football-v1.p.rapidapi.com", "x-rapidapi-key": "4dee647009mshd9a77b663ece0e7p136dbejsn22ccc6e7749e"}})
-      .then(res => {
-        let homewins = res.data.api.statistics
-        dispatch(receivedTeamsStatWinHome(homewins));
+    if (api) {
+      return axios({
+        method: "get",
+        url: `https://api-football-v1.p.rapidapi.com/v2/statistics/${league}/${team}`,
+        headers: {
+          "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+          "x-rapidapi-key": ""
+        }
       })
-      .catch(e => {
-        console.log(e);
-      });
+        .then(res => {
+          let homewins = res.data.api.statistics.matchs.wins.home;
+          dispatch(receivedTeamsStatWinHome(homewins));
+          let awaywins = res.data.api.statistics.matchs.wins.away;
+          dispatch(receivedTeamsStatWinAway(awaywins));
+          let drawhome = res.data.api.statistics.matchs.draws.home;
+          dispatch(receivedTeamsStatDrawHome(drawhome));
+          let drawaway = res.data.api.statistics.matchs.draws.away;
+          dispatch(receivedTeamsStatDrawAway(drawaway));
+          let losehome = res.data.api.statistics.matchs.loses.home;
+          dispatch(receivedTeamsStatLoseHome(losehome));
+          let loseaway = res.data.api.statistics.matchs.loses.away;
+          dispatch(receivedTeamsStatLoseAway(loseaway));
+        })
+        .catch(e => {
+          console.log(e);
+        });
     } else {
       return axios
-      .get(`https://www.api-football.com/demo/api/v2/statistics/${league}/${team}`)
-      .then(res => {
-        let homewins = res.data.api.statistics.matchs.wins.home
-        dispatch(receivedTeamsStatWinHome(homewins));
-        let awaywins = res.data.api.statistics.matchs.wins.away;
-        dispatch(receivedTeamsStatWinAway(awaywins));
-        let drawhome = res.data.api.statistics.matchs.draws.home;
-        dispatch(receivedTeamsStatDrawHome(drawhome));
-        let drawaway = res.data.api.statistics.matchs.draws.away;
-        dispatch(receivedTeamsStatDrawAway(drawaway));
-        let losehome = res.data.api.statistics.matchs.loses.home;
-        dispatch(receivedTeamsStatLoseHome(losehome));
-        let loseaway = res.data.api.statistics.matchs.loses.away;
-        dispatch(receivedTeamsStatLoseAway(loseaway));
-      })
-      .catch(e => {
-        console.log(e);
-      });
+        .get(
+          `https://www.api-football.com/demo/api/v2/statistics/${league}/${team}`
+        )
+        .then(res => {
+          let homewins = res.data.api.statistics.matchs.wins.home;
+          dispatch(receivedTeamsStatWinHome(homewins));
+          let awaywins = res.data.api.statistics.matchs.wins.away;
+          dispatch(receivedTeamsStatWinAway(awaywins));
+          let drawhome = res.data.api.statistics.matchs.draws.home;
+          dispatch(receivedTeamsStatDrawHome(drawhome));
+          let drawaway = res.data.api.statistics.matchs.draws.away;
+          dispatch(receivedTeamsStatDrawAway(drawaway));
+          let losehome = res.data.api.statistics.matchs.loses.home;
+          dispatch(receivedTeamsStatLoseHome(losehome));
+          let loseaway = res.data.api.statistics.matchs.loses.away;
+          dispatch(receivedTeamsStatLoseAway(loseaway));
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   };
 }
-

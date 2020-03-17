@@ -1,25 +1,30 @@
-import React, {useEffect} from "react";
-import {connect} from "react-redux";
-import {getTeamsStats} from "../actions";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { getTeamsStats } from "../actions";
 
-let Details = ({teamsDetail, loading, getStats}) => {
+let Details = ({ teamsDetail, loading, getStats, leagueId }) => {
+  const [selectedOption, setSelectedOption] = useState("");
 
-  const onClick = (evt, league_id, team_id) => {
-    evt.preventDefault();
-    getStats(league_id, team_id);
+  const selectTeamStat = evt => {
+    console.log(leagueId);
+    const { value } = evt.target;
+    console.log(value);
+    setSelectedOption(value);
+    getStats(leagueId, value);
   };
 
   let details = "";
 
   if (teamsDetail.length) {
     details = (
-      <select>
-        {teamsDetail && teamsDetail.length >  0 ?
-          teamsDetail.map((item) => (
-          <option key={`${item.team_id}`}>
-              {item.name}
-          </option>
-        )): null }
+      <select value={selectedOption} onChange={selectTeamStat}>
+        {teamsDetail && teamsDetail.length > 0
+          ? teamsDetail.map(item => (
+              <option key={`${item.team_id}`} value={item.team_id}>
+                {item.name}
+              </option>
+            ))
+          : null}
       </select>
     );
   }
@@ -36,22 +41,18 @@ let Details = ({teamsDetail, loading, getStats}) => {
     );
   }
 
-  return (
-    <div className="row no-gutters details-wrapper">
-      {details}
-    </div>
-  );
+  return <div className="row no-gutters details-wrapper">{details}</div>;
 };
 
 const mapStateToProps = state => ({
   teamsDetail: state.teamsDetail,
-  loading: state.isLeagueDetailLoading
+  loading: state.isLeagueDetailLoading,
+  leagueId: state.leagueId
 });
 
 const mapDispatchToProps = {
   getStats: getTeamsStats
 };
-
 
 Details = connect(
   mapStateToProps,
