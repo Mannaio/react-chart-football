@@ -3,6 +3,7 @@ export const REQUEST_LEAGUES_LIST = "REQUEST_LEAGUES_LIST";
 export const RECEIVE_LEAGUES_LIST = "RECEIVE_LEAGUES_LIST";
 export const REQUEST_TEAMS_DETAIL = "REQUEST_LEAGUE_DETAIL";
 export const RECEIVE_TEAMS_DETAIL = "RECEIVE_LEAGUE_DETAIL";
+export const RECEIVE__DETAIL = "RECEIVE_LEAGUE_DETAIL";
 export const REQUEST_TEAMS_STATS = "REQUEST_TEAMS_STAT";
 export const RECEIVE_TEAMS_STATS_WIN_HOME = "RECEIVE_TEAMS_STATS_WIN_HOME";
 export const RECEIVE_TEAMS_STATS_WIN_AWAY = "RECEIVE_TEAMS_STATS_WIN_AWAY";
@@ -11,6 +12,13 @@ export const RECEIVE_TEAMS_STATS_DRAW_AWAY = "RECEIVE_TEAMS_STATS_DRAW_AWAY";
 export const RECEIVE_TEAMS_STATS_LOSE_HOME = "RECEIVE_TEAMS_STATS_LOSE_HOME";
 export const RECEIVE_TEAMS_STATS_LOSE_AWAY = "RECEIVE_TEAMS_STATS_LOSE_AWAy";
 export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
+export const RECEIVE_TEAMS_STATS = "RECEIVE_TEAMS_STATS";
+export const RECEIVE_FIRST_TEAM_STATS = "RECEIVE_FIRST_TEAM_STATS";
+
+export const receivedTeamsStat = json => ({
+  type: RECEIVE_TEAMS_STATS,
+  json: json
+});
 
 export const receivedLeague = json => ({
   type: RECEIVE_LEAGUE,
@@ -33,6 +41,11 @@ export const requestTeamsDetail = leagueId => ({
 
 export const receivedTeamsDetail = json => ({
   type: RECEIVE_TEAMS_DETAIL,
+  json: json
+});
+
+export const receivedFirstTeamStats = json => ({
+  type: RECEIVE_FIRST_TEAM_STATS,
   json: json
 });
 
@@ -145,6 +158,8 @@ export function getTeamsDetailById(id) {
           let teams = res.data.api.teams;
           dispatch(receivedTeamsDetail(teams));
           dispatch(receivedLeague(id));
+          dispatch(receivedFirstTeamStats(teams[0].team_id));
+          dispatch(getTeamsStats(id, teams[0].team_id));
         })
         .catch(e => {
           console.log(e);
@@ -165,45 +180,49 @@ export function getTeamsStats(league, team) {
           "x-rapidapi-key": ""
         }
       })
-        .then(res => {
-          let homewins = res.data.api.statistics.matchs.wins.home;
-          dispatch(receivedTeamsStatWinHome(homewins));
-          let awaywins = res.data.api.statistics.matchs.wins.away;
-          dispatch(receivedTeamsStatWinAway(awaywins));
-          let drawhome = res.data.api.statistics.matchs.draws.home;
-          dispatch(receivedTeamsStatDrawHome(drawhome));
-          let drawaway = res.data.api.statistics.matchs.draws.away;
-          dispatch(receivedTeamsStatDrawAway(drawaway));
-          let losehome = res.data.api.statistics.matchs.loses.home;
-          dispatch(receivedTeamsStatLoseHome(losehome));
-          let loseaway = res.data.api.statistics.matchs.loses.away;
-          dispatch(receivedTeamsStatLoseAway(loseaway));
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      .then(res => {
+        const {
+          wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
+          draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
+          loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
+        } = res.data.api.statistics.matchs;
+        const teamStats = {
+          teamsStatsWinHome,
+          teamsStatsWinAway,
+          teamsStatsDrawHome,
+          teamsStatsDrawAway,
+          teamsStatsLoseHome,
+          teamsStatsLoseAway
+         }
+        dispatch(receivedTeamsStat(teamStats));
+      })
+      .catch(e => {
+        console.log(e);
+      });
     } else {
       return axios
-        .get(
-          `https://www.api-football.com/demo/api/v2/statistics/${league}/${team}`
-        )
-        .then(res => {
-          let homewins = res.data.api.statistics.matchs.wins.home;
-          dispatch(receivedTeamsStatWinHome(homewins));
-          let awaywins = res.data.api.statistics.matchs.wins.away;
-          dispatch(receivedTeamsStatWinAway(awaywins));
-          let drawhome = res.data.api.statistics.matchs.draws.home;
-          dispatch(receivedTeamsStatDrawHome(drawhome));
-          let drawaway = res.data.api.statistics.matchs.draws.away;
-          dispatch(receivedTeamsStatDrawAway(drawaway));
-          let losehome = res.data.api.statistics.matchs.loses.home;
-          dispatch(receivedTeamsStatLoseHome(losehome));
-          let loseaway = res.data.api.statistics.matchs.loses.away;
-          dispatch(receivedTeamsStatLoseAway(loseaway));
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      .get(
+        `https://www.api-football.com/demo/api/v2/statistics/${league}/${team}`
+      )
+      .then(res => {
+        const {
+          wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
+          draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
+          loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
+        } = res.data.api.statistics.matchs;
+        const teamStats = {
+          teamsStatsWinHome,
+          teamsStatsWinAway,
+          teamsStatsDrawHome,
+          teamsStatsDrawAway,
+          teamsStatsLoseHome,
+          teamsStatsLoseAway
+         }
+        dispatch(receivedTeamsStat(teamStats));
+      })
+      .catch(e => {
+        console.log(e);
+      });
     }
   };
 }

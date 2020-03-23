@@ -1,21 +1,22 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {fetchLeaguesList, getTeamsDetailById} from "../actions";
+import {fetchLeaguesList, getTeamsDetailById, getTeamsStats} from "../actions";
 
-let Leagues = ({getList, leaguesList, loading, getDetail}) => {
+let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail}) => {
+
   useEffect(() => {
     getList();
-  }, [getList]);
+  },[getList]);
 
   const onClick = (evt, id) => {
     evt.preventDefault();
-    getDetail(id)
+    getDetail(id);
   };
 
   let leagues = "";
   let dummyImage = "https://placeholder.pics/svg/640x480/ECEEFF-D0E3FF/FF0000-FFFFFF/Image%20not%20found";
 
-  if (leaguesList.length) {
+  if (leaguesList.length && teamsDetail.length) {
     leagues = leaguesList.map((item, index) => (
       <div key={`${index}`} className="col-12 col-sm-6 p-2">
         <div className="card">
@@ -50,13 +51,16 @@ let Leagues = ({getList, leaguesList, loading, getDetail}) => {
 };
 
 const mapStateToProps = state => ({
+  teamsDetail: state.teamsDetail,
   leaguesList: state.leaguesList,
-  loading: state.isLeagueListLoading
+  loading: state.isLeagueListLoading,
+  firstTeamStats: state.firstTeamStats
 });
 
 const mapDispatchToProps = {
   getList: fetchLeaguesList,
-  getDetail: getTeamsDetailById
+  getDetail: getTeamsDetailById,
+  getStats: getTeamsStats,
 };
 
 Leagues = connect(

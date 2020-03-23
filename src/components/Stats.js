@@ -8,6 +8,7 @@ let Stats = ({
   teamsStatsDrawAway,
   teamsStatsLoseHome,
   teamsStatsLoseAway,
+  teamStats,
   loading
 }) => {
   let stats = "";
@@ -50,8 +51,8 @@ let Stats = ({
         stateTeamsStatsWinAway &&
         stateTeamsStatsDrawHome &&
         stateTeamsStatsDrawAway,
-      stateTeamsStatsLoseHome,
-      stateTeamsStatsLoseAway) == "number"
+        stateTeamsStatsLoseHome,
+        stateTeamsStatsLoseAway) == "number"
     ) {
       const newteamsStatsTotal =
         stateTeamsStatsWinHome +
@@ -120,26 +121,16 @@ let Stats = ({
     }
   }, [teamsStatsLoseAway]);
 
-  if (
-    typeof (
-      teamsStatsWinHome &&
-      teamsStatsWinAway &&
-      teamsStatsDrawHome &&
-      teamsStatsDrawAway &&
-      teamsStatsLoseHome &&
-      teamsStatsLoseAway
-    ) == "number"
-  ) {
-    stats = (
-      <div className="col-sm-6">
-        <div className="card detail-card border-0 rounded-0 bg-transparent">
-          <div className="card-body text-decoration-none text-secondary">
-            Tot:{stateTeamsStatsTotal}
-          </div>
+  stats = (
+    <div className="col-sm-6">
+      <div className="card detail-card border-0 rounded-0 bg-transparent">
+        <div className="card-body text-decoration-none text-secondary">
+          Tot:{stateTeamsStatsTotal}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+
 
   if (loading) {
     stats = (

@@ -10,19 +10,23 @@ import {
   RECEIVE_TEAMS_STATS_DRAW_AWAY,
   RECEIVE_TEAMS_STATS_LOSE_HOME,
   RECEIVE_TEAMS_STATS_LOSE_AWAY,
-  RECEIVE_LEAGUE
+  RECEIVE_LEAGUE,
+  RECEIVE_TEAMS_STATS,
+  RECEIVE_FIRST_TEAM_STATS
 } from "../actions";
 
 const initialState = {
   league: [],
   leaguesList: [],
   teamsDetail: [],
+  teamStats: [],
   teamsStatsWinHome: [],
   teamsStatsWinAway: [],
   teamsStatsDrawHome: [],
   teamsStatsDrawAway: [],
   teamsStatsLoseHome: [],
   teamsStatsLoseAway: [],
+  firstTeamStats: [],
   isLeagueListLoading: false,
   isTeamsDetailLoading: false,
   isTeamsStatsLoading: false
@@ -36,14 +40,28 @@ const reducer = (state = initialState, action) => {
       return { ...state, leaguesList: action.json, isLeagueListLoading: false };
     case REQUEST_TEAMS_DETAIL:
       return { ...state, isTeamsDetailLoading: true };
+    case REQUEST_TEAMS_STATS:
+      return { ...state, isTeamsStatsLoading: true };
+    case RECEIVE_LEAGUE:
+      return { ...state, leagueId: action.json };
+    case RECEIVE_TEAMS_STATS:
+      return {
+        ...state,
+        ...action.json,
+        isTeamsStatsLoading: false
+      };
     case RECEIVE_TEAMS_DETAIL:
       return {
         ...state,
         teamsDetail: action.json,
         isTeamsDetailLoading: false
       };
-    case REQUEST_TEAMS_STATS:
-      return { ...state, isTeamsStatsLoading: true };
+    case RECEIVE_FIRST_TEAM_STATS:
+      return {
+        ...state,
+        firstTeamStats: action.json,
+        isTeamsDetailLoading: false
+      };
     case RECEIVE_TEAMS_STATS_WIN_HOME:
       return {
         ...state,
@@ -80,8 +98,6 @@ const reducer = (state = initialState, action) => {
         teamsStatsLoseAway: action.json,
         isTeamsStatsLoading: false
       };
-    case RECEIVE_LEAGUE:
-      return { ...state, leagueId: action.json };
     default:
       return state;
   }

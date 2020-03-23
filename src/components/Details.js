@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
-let Details = ({ teamsDetail, loading, getStats, leagueId }) => {
+let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats}) => {
   const [selectedOption, setSelectedOption] = useState("");
 
   const selectTeamStat = evt => {
@@ -47,11 +47,12 @@ let Details = ({ teamsDetail, loading, getStats, leagueId }) => {
 const mapStateToProps = state => ({
   teamsDetail: state.teamsDetail,
   loading: state.isLeagueDetailLoading,
-  leagueId: state.leagueId
+  leagueId: state.leagueId,
+  firstTeamStats: state.firstTeamStats
 });
 
 const mapDispatchToProps = {
-  getStats: getTeamsStats
+  getStats: getTeamsStats,
 };
 
 Details = connect(
