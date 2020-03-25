@@ -38,8 +38,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, isLeagueListLoading: true };
     case RECEIVE_LEAGUES_LIST:
       return { ...state, leaguesList: action.json, isLeagueListLoading: false };
-    case REQUEST_TEAMS_DETAIL:
-      return { ...state, isTeamsDetailLoading: true };
     case REQUEST_TEAMS_STATS:
       return { ...state, isTeamsStatsLoading: true };
     case RECEIVE_LEAGUE:

@@ -3,13 +3,19 @@ import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
 let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats}) => {
-  const [selectedOption, setSelectedOption] = useState("");
 
-  const selectTeamStat = evt => {
-    console.log(leagueId);
+  const [selectedHomeOption, setSelectedHomeOption] = useState("");
+  const [selectedAwayOption, setSelectedAwayOption] = useState("");
+
+  const selectHomeTeamStat = evt => {
     const { value } = evt.target;
-    console.log(value);
-    setSelectedOption(value);
+    setSelectedHomeOption(value);
+    getStats(leagueId, value);
+  };
+
+  const selectAwayTeamStat = evt => {
+    const { value } = evt.target;
+    setSelectedAwayOption(value);
     getStats(leagueId, value);
   };
 
@@ -17,15 +23,30 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats}) => {
 
   if (teamsDetail.length) {
     details = (
-      <select value={selectedOption} onChange={selectTeamStat}>
-        {teamsDetail && teamsDetail.length > 0
-          ? teamsDetail.map(item => (
-              <option key={`${item.team_id}`} value={item.team_id}>
-                {item.name}
-              </option>
-            ))
-          : null}
-      </select>
+      <>
+        <strong>Home Team</strong>
+        <select value={selectedHomeOption} onChange={selectHomeTeamStat}>
+          {teamsDetail && teamsDetail.length > 0
+            ? teamsDetail.map(item => (
+                <option key={`${item.team_id}`} value={item.team_id}>
+                  {item.name}
+                </option>
+              ))
+            : null}
+        </select>
+        <>
+          <strong>Away Team</strong>
+          <select value={selectedAwayOption} onChange={selectAwayTeamStat}>
+            {teamsDetail && teamsDetail.length > 0
+              ? teamsDetail.map(item => (
+                  <option key={`${item.team_id}`} value={item.team_id}>
+                    {item.name}
+                  </option>
+                ))
+              : null}
+          </select>
+        </>
+      </>
     );
   }
 

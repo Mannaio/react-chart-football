@@ -46,23 +46,15 @@ let Stats = ({
   );
 
   useEffect(() => {
-    if (
-      typeof (stateTeamsStatsWinHome &&
-        stateTeamsStatsWinAway &&
-        stateTeamsStatsDrawHome &&
-        stateTeamsStatsDrawAway,
-        stateTeamsStatsLoseHome,
-        stateTeamsStatsLoseAway) == "number"
-    ) {
-      const newteamsStatsTotal =
-        stateTeamsStatsWinHome +
-        stateTeamsStatsWinAway +
-        stateTeamsStatsDrawHome +
-        stateTeamsStatsDrawAway +
-        stateTeamsStatsLoseHome +
-        stateTeamsStatsLoseAway;
+    const newteamsStatsTotal =
+      stateTeamsStatsWinHome +
+      stateTeamsStatsWinAway +
+      stateTeamsStatsDrawHome +
+      stateTeamsStatsDrawAway +
+      stateTeamsStatsLoseHome +
+      stateTeamsStatsLoseAway;
       setStateTeamsStatsTotal(newteamsStatsTotal);
-    }
+
   }, [
     stateTeamsStatsWinHome,
     stateTeamsStatsWinAway,
@@ -73,56 +65,47 @@ let Stats = ({
   ]);
 
   useEffect(() => {
-    if (typeof teamsStatsWinHome == "number") {
-      const newteamsStatsWinHome = teamsStatsWinHome * 0;
-      setStateTeamsStatsWinHome(newteamsStatsWinHome);
-    }
+    const newteamsStatsWinHome = teamsStatsWinHome * 0;
+    setStateTeamsStatsWinHome(newteamsStatsWinHome);
   }, [teamsStatsWinHome]);
 
   useEffect(() => {
-    if (typeof teamsStatsWinAway == "number") {
-      const newteamsStatsWinAway = teamsStatsWinAway * 2;
-      setStateTeamsStatsWinAway(newteamsStatsWinAway);
-    }
+    const newteamsStatsWinAway = teamsStatsWinAway * 2;
+    setStateTeamsStatsWinAway(newteamsStatsWinAway);
   }, [teamsStatsWinAway]);
 
   useEffect(() => {
-    if (typeof teamsStatsDrawHome == "number") {
-      const newteamsStatsDrawHome = teamsStatsDrawHome * -2;
-      setStateTeamsStatsDrawHome(newteamsStatsDrawHome);
-    }
+    const newteamsStatsDrawHome = teamsStatsDrawHome * -2;
+    setStateTeamsStatsDrawHome(newteamsStatsDrawHome);
   }, [teamsStatsDrawHome]);
 
   useEffect(() => {
-    if (typeof teamsStatsDrawAway == "number") {
-      const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
-      setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
-    }
+    const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
+    setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
   }, [teamsStatsDrawAway]);
 
   useEffect(() => {
-    if (typeof teamsStatsDrawAway == "number") {
-      const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
-      setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
-    }
+    const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
+    setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
   }, [teamsStatsDrawAway]);
 
   useEffect(() => {
-    if (typeof teamsStatsLoseHome == "number") {
-      const newteamsStatsLoseHome = teamsStatsLoseHome * -3;
-      setStateTeamsStatsLoseHome(newteamsStatsLoseHome);
-    }
+    const newteamsStatsLoseHome = teamsStatsLoseHome * -3;
+    setStateTeamsStatsLoseHome(newteamsStatsLoseHome);
   }, [teamsStatsLoseHome]);
 
   useEffect(() => {
-    if (typeof teamsStatsLoseAway == "number") {
-      const newteamsStatsLoseAway = teamsStatsLoseAway * -1;
-      setStateTeamsStatsLoseAway(newteamsStatsLoseAway);
-    }
+    const newteamsStatsLoseAway = teamsStatsLoseAway * -1;
+    setStateTeamsStatsLoseAway(newteamsStatsLoseAway);
   }, [teamsStatsLoseAway]);
 
   stats = (
     <div className="col-sm-6">
+      <div className="card detail-card border-0 rounded-0 bg-transparent">
+        <div className="card-body text-decoration-none text-secondary">
+          Tot:{stateTeamsStatsTotal}
+        </div>
+      </div>
       <div className="card detail-card border-0 rounded-0 bg-transparent">
         <div className="card-body text-decoration-none text-secondary">
           Tot:{stateTeamsStatsTotal}

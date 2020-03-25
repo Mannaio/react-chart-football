@@ -1,7 +1,6 @@
 import axios from "axios";
 export const REQUEST_LEAGUES_LIST = "REQUEST_LEAGUES_LIST";
 export const RECEIVE_LEAGUES_LIST = "RECEIVE_LEAGUES_LIST";
-export const REQUEST_TEAMS_DETAIL = "REQUEST_LEAGUE_DETAIL";
 export const RECEIVE_TEAMS_DETAIL = "RECEIVE_LEAGUE_DETAIL";
 export const RECEIVE__DETAIL = "RECEIVE_LEAGUE_DETAIL";
 export const REQUEST_TEAMS_STATS = "REQUEST_TEAMS_STAT";
@@ -32,11 +31,6 @@ export const requestLeaguesList = () => ({
 export const receivedLeaguesList = json => ({
   type: RECEIVE_LEAGUES_LIST,
   json: json
-});
-
-export const requestTeamsDetail = leagueId => ({
-  type: REQUEST_TEAMS_DETAIL,
-  leagueId
 });
 
 export const receivedTeamsDetail = json => ({
@@ -90,7 +84,6 @@ export const receivedTeamsStatLoseAway = json => ({
 export function fetchLeaguesList() {
   return function(dispatch) {
     dispatch(requestLeaguesList());
-    dispatch(requestTeamsDetail());
     dispatch(requestTeamsStat());
     const api = false;
     if (api) {
