@@ -1,6 +1,7 @@
 import axios from "axios";
 export const REQUEST_LEAGUES_LIST = "REQUEST_LEAGUES_LIST";
 export const RECEIVE_LEAGUES_LIST = "RECEIVE_LEAGUES_LIST";
+export const REQUEST_TEAMS_DETAIL = "REQUEST_LEAGUE_DETAIL";
 export const RECEIVE_TEAMS_DETAIL = "RECEIVE_LEAGUE_DETAIL";
 export const RECEIVE__DETAIL = "RECEIVE_LEAGUE_DETAIL";
 export const REQUEST_TEAMS_STATS = "REQUEST_TEAMS_STAT";
@@ -13,20 +14,11 @@ export const RECEIVE_TEAMS_STATS_LOSE_AWAY = "RECEIVE_TEAMS_STATS_LOSE_AWAy";
 export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
 export const RECEIVE_TEAMS_STATS = "RECEIVE_TEAMS_STATS";
 export const RECEIVE_FIRST_TEAM_STATS = "RECEIVE_FIRST_TEAM_STATS";
-export const SET_HOME_TEAM = "SET_HOME_TEAM";
-export const SET_AWAY_TEAM = "SET_AWAY_TEAM";
 
-export const setHomeTeam = () => ({
-  type: SET_HOME_TEAM,
-});
-
-export const setAwayTeam = () => ({
-  type: SET_AWAY_TEAM,
-});
-
-export const receivedTeamsStat = json => ({
+export const receivedTeamsStat = (json, type) => ({
   type: RECEIVE_TEAMS_STATS,
-  json: json
+  json: json,
+  teamtype: type
 });
 
 export const receivedLeague = json => ({
@@ -41,6 +33,11 @@ export const requestLeaguesList = () => ({
 export const receivedLeaguesList = json => ({
   type: RECEIVE_LEAGUES_LIST,
   json: json
+});
+
+export const requestTeamsDetail = leagueId => ({
+  type: REQUEST_TEAMS_DETAIL,
+  leagueId
 });
 
 export const receivedTeamsDetail = json => ({
@@ -94,6 +91,7 @@ export const receivedTeamsStatLoseAway = json => ({
 export function fetchLeaguesList() {
   return function(dispatch) {
     dispatch(requestLeaguesList());
+    dispatch(requestTeamsDetail());
     dispatch(requestTeamsStat());
     const api = false;
     if (api) {
@@ -110,7 +108,7 @@ export function fetchLeaguesList() {
           /** To initially load the first league details into the details component */
           dispatch(getTeamsDetailById(leagues[0].league_id));
           //dispatch(getTeamsStats(leagues[0].league_id, leagues[0].league_id[357].team_id[19]));
-          dispatch(getTeamsStats(leagues[0].league_id, 19));
+          dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
           dispatch(receivedLeaguesList(leagues));
         })
         .catch(e => {
@@ -123,7 +121,8 @@ export function fetchLeaguesList() {
           let leagues = res.data.api.leagues;
           /** To initially load the first league details into the details component */
           dispatch(getTeamsDetailById(leagues[0].league_id));
-          dispatch(getTeamsStats(leagues[0].league_id, 19));
+          dispatch(getTeamsStats(leagues[0].league_id, 19, 'away'));
+          dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
           dispatch(receivedLeaguesList(leagues));
         })
         .catch(e => {
@@ -171,7 +170,7 @@ export function getTeamsDetailById(id) {
   };
 }
 
-export function getTeamsStats(league, team) {
+export function getTeamsStats(league, team, type) {
   return function(dispatch) {
     const api = false;
     if (api) {
@@ -183,49 +182,51 @@ export function getTeamsStats(league, team) {
           "x-rapidapi-key": ""
         }
       })
-      .then(res => {
-        const {
-          wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
-          draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
-          loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
-        } = res.data.api.statistics.matchs;
-        const teamStats = {
-          teamsStatsWinHome,
-          teamsStatsWinAway,
-          teamsStatsDrawHome,
-          teamsStatsDrawAway,
-          teamsStatsLoseHome,
-          teamsStatsLoseAway
-         }
-        dispatch(receivedTeamsStat(teamStats));
-      })
-      .catch(e => {
-        console.log(e);
-      });
+        .then(res => {
+          const {
+            wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
+            draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
+            loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
+          } = res.data.api.statistics.matchs;
+          const teamStats = {
+            teamsStatsWinHome,
+            teamsStatsWinAway,
+            teamsStatsDrawHome,
+            teamsStatsDrawAway,
+            teamsStatsLoseHome,
+            teamsStatsLoseAway
+          };
+          console.log("type", type);
+          dispatch(receivedTeamsStat(teamStats, type));
+        })
+        .catch(e => {
+          console.log(e);
+        });
     } else {
       return axios
-      .get(
-        `https://www.api-football.com/demo/api/v2/statistics/${league}/${team}`
-      )
-      .then(res => {
-        const {
-          wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
-          draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
-          loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
-        } = res.data.api.statistics.matchs;
-        const teamStats = {
-          teamsStatsWinHome,
-          teamsStatsWinAway,
-          teamsStatsDrawHome,
-          teamsStatsDrawAway,
-          teamsStatsLoseHome,
-          teamsStatsLoseAway
-         }
-        dispatch(receivedTeamsStat(teamStats));
-      })
-      .catch(e => {
-        console.log(e);
-      });
+        .get(
+          `https://www.api-football.com/demo/api/v2/statistics/${league}/${team}`
+        )
+        .then(res => {
+          const {
+            wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
+            draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
+            loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
+          } = res.data.api.statistics.matchs;
+          const teamStats = {
+            teamsStatsWinHome,
+            teamsStatsWinAway,
+            teamsStatsDrawHome,
+            teamsStatsDrawAway,
+            teamsStatsLoseHome,
+            teamsStatsLoseAway
+          };
+          console.log("teamStats", teamStats, type);
+          dispatch(receivedTeamsStat(teamStats, type));
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   };
 }

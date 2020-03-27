@@ -30,17 +30,11 @@ const initialState = {
   firstTeamStats: [],
   isLeagueListLoading: false,
   isTeamsDetailLoading: false,
-  isTeamsStatsLoading: false,
-  isHomeTeam: true,
-  isAwayTeam: true
+  isTeamsStatsLoading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_HOME_TEAM:
-      return { ...state, isHomeTeam: true, isAwayTeam: false };
-    case SET_AWAY_TEAM:
-      return { ...state, isHomeTeam: false, isAwayTeam: true };
     case REQUEST_LEAGUES_LIST:
       return { ...state, isLeagueListLoading: true };
     case RECEIVE_LEAGUES_LIST:
@@ -50,8 +44,12 @@ const reducer = (state = initialState, action) => {
     case RECEIVE_LEAGUE:
       return { ...state, leagueId: action.json };
     case RECEIVE_TEAMS_STATS:
+      console.log("Action", action);
       return {
         ...state,
+        [action.teamtype]:{
+          ...action.json
+        },
         ...action.json,
         isTeamsStatsLoading: false
       };

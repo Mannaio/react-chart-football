@@ -9,118 +9,33 @@ let Stats = ({
   teamsStatsLoseHome,
   teamsStatsLoseAway,
   teamStats,
-  loading,
-  isHomeTeam,
-  isAwayTeam
+  home={},
+  away={},
+  loading
 }) => {
-  let stats = "";
-
-  const [stateTeamsStatsWinHome, setStateTeamsStatsWinHome] = useState(
-    teamsStatsWinHome
-  );
-  const [stateTeamsStatsWinAway, setStateTeamsStatsWinAway] = useState(
-    teamsStatsWinAway
-  );
-  const [stateTeamsStatsDrawHome, setStateTeamsStatsDrawHome] = useState(
-    teamsStatsDrawHome
-  );
-  const [stateTeamsStatsDrawAway, setStateTeamsStatsDrawAway] = useState(
-    teamsStatsDrawAway
-  );
-  const [stateTeamsStatsLoseHome, setStateTeamsStatsLoseHome] = useState(
-    teamsStatsLoseHome
-  );
-  const [stateTeamsStatsLoseAway, setStateTeamsStatsLoseAway] = useState(
-    teamsStatsLoseAway
-  );
-
-  const initialValue = [
-    stateTeamsStatsWinHome,
-    stateTeamsStatsWinAway,
-    stateTeamsStatsDrawHome,
-    stateTeamsStatsDrawAway,
-    stateTeamsStatsLoseHome,
-    stateTeamsStatsLoseAway
-  ];
-
-  const [stateTeamsStatsTotal, setStateTeamsStatsTotal] = useState(
-    initialValue
-  );
-
-  // const [stateTeamsStatsTotalAway, setStateTeamsStatsTotalAway] = useState(
-  //   initialValue
-  // );
-
-
-  useEffect(() => {
-    const newteamsStatsTotal =
-      stateTeamsStatsWinHome +
-      stateTeamsStatsWinAway +
-      stateTeamsStatsDrawHome +
-      stateTeamsStatsDrawAway +
-      stateTeamsStatsLoseHome +
-      stateTeamsStatsLoseAway;
-      setStateTeamsStatsTotal(newteamsStatsTotal);
-
-  }, [
-    stateTeamsStatsWinHome,
-    stateTeamsStatsWinAway,
-    stateTeamsStatsDrawHome,
-    stateTeamsStatsDrawAway,
-    stateTeamsStatsLoseHome,
-    stateTeamsStatsLoseAway
-  ]);
-
-  useEffect(() => {
-    const newteamsStatsWinHome = teamsStatsWinHome * 0;
-    setStateTeamsStatsWinHome(newteamsStatsWinHome);
-  }, [teamsStatsWinHome]);
-
-  useEffect(() => {
-    const newteamsStatsWinAway = teamsStatsWinAway * 2;
-    setStateTeamsStatsWinAway(newteamsStatsWinAway);
-  }, [teamsStatsWinAway]);
-
-  useEffect(() => {
-    const newteamsStatsDrawHome = teamsStatsDrawHome * -2;
-    setStateTeamsStatsDrawHome(newteamsStatsDrawHome);
-  }, [teamsStatsDrawHome]);
-
-  useEffect(() => {
-    const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
-    setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
-  }, [teamsStatsDrawAway]);
-
-  useEffect(() => {
-    const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
-    setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
-  }, [teamsStatsDrawAway]);
-
-  useEffect(() => {
-    const newteamsStatsLoseHome = teamsStatsLoseHome * -3;
-    setStateTeamsStatsLoseHome(newteamsStatsLoseHome);
-  }, [teamsStatsLoseHome]);
-
-  useEffect(() => {
-    const newteamsStatsLoseAway = teamsStatsLoseAway * -1;
-    setStateTeamsStatsLoseAway(newteamsStatsLoseAway);
-  }, [teamsStatsLoseAway]);
-
+  console.log("home", home);
+  console.log("away", away);
+  let stats;
   stats = (
     <div className="col-sm-6">
       <div className="card detail-card border-0 rounded-0 bg-transparent">
         <div className="card-body text-decoration-none text-secondary">
-          Tot:{stateTeamsStatsTotal}
+          Tot:
+          {home.teamsStatsWinHome +
+            home.teamsStatsDrawHome +
+            home.teamsStatsLoseHome}
         </div>
       </div>
       <div className="card detail-card border-0 rounded-0 bg-transparent">
         <div className="card-body text-decoration-none text-secondary">
-          Tot:{stateTeamsStatsTotal}
+          Tot:
+          {away.teamsStatsWinAway +
+            away.teamsStatsDrawAway +
+            away.teamsStatsLoseAway}
         </div>
       </div>
     </div>
   );
-
 
   if (loading) {
     stats = (
@@ -144,8 +59,12 @@ const mapStateToProps = state => ({
   teamsStatsDrawAway: state.teamsStatsDrawAway,
   teamsStatsLoseHome: state.teamsStatsLoseHome,
   teamsStatsLoseAway: state.teamsStatsLoseAway,
-  loading: state.isTeamsStatsLoading
-
+  loading: state.isTeamsStatsLoading,
+  isHomeTeam: state.isHomeTeam,
+  isAwayTeam: state.isAwayTeam,
+  home: state.home,
+  away: state.away,
+  stateTeamsStatsTotalAway: state.stateTeamsStatsTotalAway
 });
 
 Stats = connect(
