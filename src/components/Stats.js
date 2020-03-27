@@ -9,7 +9,9 @@ let Stats = ({
   teamsStatsLoseHome,
   teamsStatsLoseAway,
   teamStats,
-  loading
+  loading,
+  isHomeTeam,
+  isAwayTeam
 }) => {
   let stats = "";
 
@@ -44,6 +46,11 @@ let Stats = ({
   const [stateTeamsStatsTotal, setStateTeamsStatsTotal] = useState(
     initialValue
   );
+
+  // const [stateTeamsStatsTotalAway, setStateTeamsStatsTotalAway] = useState(
+  //   initialValue
+  // );
+
 
   useEffect(() => {
     const newteamsStatsTotal =
@@ -138,6 +145,7 @@ const mapStateToProps = state => ({
   teamsStatsLoseHome: state.teamsStatsLoseHome,
   teamsStatsLoseAway: state.teamsStatsLoseAway,
   loading: state.isTeamsStatsLoading
+
 });
 
 Stats = connect(

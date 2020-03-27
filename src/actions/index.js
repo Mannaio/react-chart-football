@@ -13,6 +13,16 @@ export const RECEIVE_TEAMS_STATS_LOSE_AWAY = "RECEIVE_TEAMS_STATS_LOSE_AWAy";
 export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
 export const RECEIVE_TEAMS_STATS = "RECEIVE_TEAMS_STATS";
 export const RECEIVE_FIRST_TEAM_STATS = "RECEIVE_FIRST_TEAM_STATS";
+export const SET_HOME_TEAM = "SET_HOME_TEAM";
+export const SET_AWAY_TEAM = "SET_AWAY_TEAM";
+
+export const setHomeTeam = () => ({
+  type: SET_HOME_TEAM,
+});
+
+export const setAwayTeam = () => ({
+  type: SET_AWAY_TEAM,
+});
 
 export const receivedTeamsStat = json => ({
   type: RECEIVE_TEAMS_STATS,

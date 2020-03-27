@@ -1,7 +1,6 @@
 import {
   REQUEST_LEAGUES_LIST,
   RECEIVE_LEAGUES_LIST,
-  REQUEST_TEAMS_DETAIL,
   RECEIVE_TEAMS_DETAIL,
   REQUEST_TEAMS_STATS,
   RECEIVE_TEAMS_STATS_WIN_HOME,
@@ -12,7 +11,9 @@ import {
   RECEIVE_TEAMS_STATS_LOSE_AWAY,
   RECEIVE_LEAGUE,
   RECEIVE_TEAMS_STATS,
-  RECEIVE_FIRST_TEAM_STATS
+  RECEIVE_FIRST_TEAM_STATS,
+  SET_HOME_TEAM,
+  SET_AWAY_TEAM
 } from "../actions";
 
 const initialState = {
@@ -29,11 +30,17 @@ const initialState = {
   firstTeamStats: [],
   isLeagueListLoading: false,
   isTeamsDetailLoading: false,
-  isTeamsStatsLoading: false
+  isTeamsStatsLoading: false,
+  isHomeTeam: true,
+  isAwayTeam: true
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_HOME_TEAM:
+      return { ...state, isHomeTeam: true, isAwayTeam: false };
+    case SET_AWAY_TEAM:
+      return { ...state, isHomeTeam: false, isAwayTeam: true };
     case REQUEST_LEAGUES_LIST:
       return { ...state, isLeagueListLoading: true };
     case RECEIVE_LEAGUES_LIST:

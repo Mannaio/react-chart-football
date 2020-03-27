@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
-let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats}) => {
+export const RECEIVE_TEAM_TYPE = "RECEIVE_TEAM_TYPE";
+
+
+let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats, isHomeTeam, isAwayTeam, stateTeamsStatsTotalAway}) => {
 
   const [selectedHomeOption, setSelectedHomeOption] = useState("");
   const [selectedAwayOption, setSelectedAwayOption] = useState("");
@@ -69,8 +72,12 @@ const mapStateToProps = state => ({
   teamsDetail: state.teamsDetail,
   loading: state.isLeagueDetailLoading,
   leagueId: state.leagueId,
-  firstTeamStats: state.firstTeamStats
+  firstTeamStats: state.firstTeamStats,
+  isHomeTeam: state.isHomeTeam,
+  isAwayTeam: state.isAwayTeam,
+  stateTeamsStatsTotalAway: state.stateTeamsStatsTotalAway
 });
+
 
 const mapDispatchToProps = {
   getStats: getTeamsStats,
