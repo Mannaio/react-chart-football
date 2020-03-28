@@ -31,8 +31,6 @@ const initialState = {
   isLeagueListLoading: false,
   isTeamsDetailLoading: false,
   isTeamsStatsLoading: false,
-  isHomeTeam: true,
-  isAwayTeam: true
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,8 +48,12 @@ const reducer = (state = initialState, action) => {
     case RECEIVE_LEAGUE:
       return { ...state, leagueId: action.json };
     case RECEIVE_TEAMS_STATS:
+      console.log("Action", action);
       return {
         ...state,
+        [action.teamtype]:{
+          ...action.json
+        },
         ...action.json,
         isTeamsStatsLoading: false
       };

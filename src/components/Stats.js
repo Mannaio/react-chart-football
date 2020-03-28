@@ -10,112 +10,33 @@ let Stats = ({
   teamsStatsLoseAway,
   teamStats,
   loading,
-  isHomeTeam,
-  isAwayTeam
+  home={},
+  away={}
 }) => {
   let stats = "";
-
-  const [stateTeamsStatsWinHome, setStateTeamsStatsWinHome] = useState(
-    teamsStatsWinHome
-  );
-  const [stateTeamsStatsWinAway, setStateTeamsStatsWinAway] = useState(
-    teamsStatsWinAway
-  );
-  const [stateTeamsStatsDrawHome, setStateTeamsStatsDrawHome] = useState(
-    teamsStatsDrawHome
-  );
-  const [stateTeamsStatsDrawAway, setStateTeamsStatsDrawAway] = useState(
-    teamsStatsDrawAway
-  );
-  const [stateTeamsStatsLoseHome, setStateTeamsStatsLoseHome] = useState(
-    teamsStatsLoseHome
-  );
-  const [stateTeamsStatsLoseAway, setStateTeamsStatsLoseAway] = useState(
-    teamsStatsLoseAway
-  );
-
-  const initialValue = [
-    stateTeamsStatsWinHome,
-    stateTeamsStatsWinAway,
-    stateTeamsStatsDrawHome,
-    stateTeamsStatsDrawAway,
-    stateTeamsStatsLoseHome,
-    stateTeamsStatsLoseAway
-  ];
-
-  const [stateTeamsStatsTotal, setStateTeamsStatsTotal] = useState(
-    initialValue
-  );
-
-  // const [stateTeamsStatsTotalAway, setStateTeamsStatsTotalAway] = useState(
-  //   initialValue
-  // );
-
-
-  useEffect(() => {
-    const newteamsStatsTotal =
-      stateTeamsStatsWinHome +
-      stateTeamsStatsWinAway +
-      stateTeamsStatsDrawHome +
-      stateTeamsStatsDrawAway +
-      stateTeamsStatsLoseHome +
-      stateTeamsStatsLoseAway;
-      setStateTeamsStatsTotal(newteamsStatsTotal);
-
-  }, [
-    stateTeamsStatsWinHome,
-    stateTeamsStatsWinAway,
-    stateTeamsStatsDrawHome,
-    stateTeamsStatsDrawAway,
-    stateTeamsStatsLoseHome,
-    stateTeamsStatsLoseAway
-  ]);
-
-  useEffect(() => {
-    const newteamsStatsWinHome = teamsStatsWinHome * 0;
-    setStateTeamsStatsWinHome(newteamsStatsWinHome);
-  }, [teamsStatsWinHome]);
-
-  useEffect(() => {
-    const newteamsStatsWinAway = teamsStatsWinAway * 2;
-    setStateTeamsStatsWinAway(newteamsStatsWinAway);
-  }, [teamsStatsWinAway]);
-
-  useEffect(() => {
-    const newteamsStatsDrawHome = teamsStatsDrawHome * -2;
-    setStateTeamsStatsDrawHome(newteamsStatsDrawHome);
-  }, [teamsStatsDrawHome]);
-
-  useEffect(() => {
-    const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
-    setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
-  }, [teamsStatsDrawAway]);
-
-  useEffect(() => {
-    const newteamsStatsDrawAway = teamsStatsDrawAway * 0;
-    setStateTeamsStatsDrawAway(newteamsStatsDrawAway);
-  }, [teamsStatsDrawAway]);
-
-  useEffect(() => {
-    const newteamsStatsLoseHome = teamsStatsLoseHome * -3;
-    setStateTeamsStatsLoseHome(newteamsStatsLoseHome);
-  }, [teamsStatsLoseHome]);
-
-  useEffect(() => {
-    const newteamsStatsLoseAway = teamsStatsLoseAway * -1;
-    setStateTeamsStatsLoseAway(newteamsStatsLoseAway);
-  }, [teamsStatsLoseAway]);
 
   stats = (
     <div className="col-sm-6">
       <div className="card detail-card border-0 rounded-0 bg-transparent">
         <div className="card-body text-decoration-none text-secondary">
-          Tot:{stateTeamsStatsTotal}
+          Tot: {  home.teamsStatsWinHome * 0 +
+                  home.teamsStatsDrawHome * -2 +
+                  home.teamsStatsLoseHome * -3 +
+                  home.teamsStatsWinAway * 2 +
+                  home.teamsStatsDrawAway * 0 +
+                  home.teamsStatsLoseAway * -1
+               }
         </div>
       </div>
       <div className="card detail-card border-0 rounded-0 bg-transparent">
         <div className="card-body text-decoration-none text-secondary">
-          Tot:{stateTeamsStatsTotal}
+        Tot: {  away.teamsStatsWinHome * 0 +
+                away.teamsStatsDrawHome * -2 +
+                away.teamsStatsLoseHome * -3 +
+                away.teamsStatsWinAway * 2 +
+                away.teamsStatsDrawAway * 0 +
+                away.teamsStatsLoseAway * -1
+             }
         </div>
       </div>
     </div>
@@ -144,7 +65,9 @@ const mapStateToProps = state => ({
   teamsStatsDrawAway: state.teamsStatsDrawAway,
   teamsStatsLoseHome: state.teamsStatsLoseHome,
   teamsStatsLoseAway: state.teamsStatsLoseAway,
-  loading: state.isTeamsStatsLoading
+  loading: state.isTeamsStatsLoading,
+  home: state.home,
+  away: state.away,
 
 });
 

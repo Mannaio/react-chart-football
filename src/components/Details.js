@@ -13,13 +13,13 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats, isHom
   const selectHomeTeamStat = evt => {
     const { value } = evt.target;
     setSelectedHomeOption(value);
-    getStats(leagueId, value);
+    getStats(leagueId, value, 'home');
   };
 
   const selectAwayTeamStat = evt => {
     const { value } = evt.target;
     setSelectedAwayOption(value);
-    getStats(leagueId, value);
+    getStats(leagueId, value, 'away');
   };
 
   let details = "";

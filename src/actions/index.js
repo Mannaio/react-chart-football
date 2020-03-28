@@ -2,8 +2,8 @@ import axios from "axios";
 export const REQUEST_LEAGUES_LIST = "REQUEST_LEAGUES_LIST";
 export const RECEIVE_LEAGUES_LIST = "RECEIVE_LEAGUES_LIST";
 export const RECEIVE_TEAMS_DETAIL = "RECEIVE_LEAGUE_DETAIL";
-export const RECEIVE__DETAIL = "RECEIVE_LEAGUE_DETAIL";
 export const REQUEST_TEAMS_STATS = "REQUEST_TEAMS_STAT";
+// export const REQUEST_TEAMS_DETAIL = "REQUEST_TEAMS_DETAIL"
 export const RECEIVE_TEAMS_STATS_WIN_HOME = "RECEIVE_TEAMS_STATS_WIN_HOME";
 export const RECEIVE_TEAMS_STATS_WIN_AWAY = "RECEIVE_TEAMS_STATS_WIN_AWAY";
 export const RECEIVE_TEAMS_STATS_DRAW_HOME = "RECEIVE_TEAMS_STATS_DRAW_HOME";
@@ -16,17 +16,15 @@ export const RECEIVE_FIRST_TEAM_STATS = "RECEIVE_FIRST_TEAM_STATS";
 export const SET_HOME_TEAM = "SET_HOME_TEAM";
 export const SET_AWAY_TEAM = "SET_AWAY_TEAM";
 
-export const setHomeTeam = () => ({
-  type: SET_HOME_TEAM,
-});
+// export const requestTeamsDetail = leagueId => ({
+//   type: REQUEST_TEAMS_DETAIL,
+//   leagueId
+// });
 
-export const setAwayTeam = () => ({
-  type: SET_AWAY_TEAM,
-});
-
-export const receivedTeamsStat = json => ({
+export const receivedTeamsStat = (json, type) => ({
   type: RECEIVE_TEAMS_STATS,
-  json: json
+  json: json,
+  teamtype: type,
 });
 
 export const receivedLeague = json => ({
@@ -95,6 +93,7 @@ export function fetchLeaguesList() {
   return function(dispatch) {
     dispatch(requestLeaguesList());
     dispatch(requestTeamsStat());
+    // dispatch(requestTeamsDetail());
     const api = false;
     if (api) {
       return axios({
@@ -110,7 +109,7 @@ export function fetchLeaguesList() {
           /** To initially load the first league details into the details component */
           dispatch(getTeamsDetailById(leagues[0].league_id));
           //dispatch(getTeamsStats(leagues[0].league_id, leagues[0].league_id[357].team_id[19]));
-          dispatch(getTeamsStats(leagues[0].league_id, 19));
+          dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
           dispatch(receivedLeaguesList(leagues));
         })
         .catch(e => {
@@ -123,7 +122,9 @@ export function fetchLeaguesList() {
           let leagues = res.data.api.leagues;
           /** To initially load the first league details into the details component */
           dispatch(getTeamsDetailById(leagues[0].league_id));
-          dispatch(getTeamsStats(leagues[0].league_id, 19));
+          //dispatch(getTeamsStats(leagues[0].league_id, leagues[0].league_id[357].team_id[19]));
+          dispatch(getTeamsStats(leagues[0].league_id, 19, 'away'));
+          dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
           dispatch(receivedLeaguesList(leagues));
         })
         .catch(e => {
@@ -171,7 +172,7 @@ export function getTeamsDetailById(id) {
   };
 }
 
-export function getTeamsStats(league, team) {
+export function getTeamsStats(league, team, type) {
   return function(dispatch) {
     const api = false;
     if (api) {
@@ -197,7 +198,7 @@ export function getTeamsStats(league, team) {
           teamsStatsLoseHome,
           teamsStatsLoseAway
          }
-        dispatch(receivedTeamsStat(teamStats));
+        dispatch(receivedTeamsStat(teamStats, type));
       })
       .catch(e => {
         console.log(e);
@@ -221,7 +222,8 @@ export function getTeamsStats(league, team) {
           teamsStatsLoseHome,
           teamsStatsLoseAway
          }
-        dispatch(receivedTeamsStat(teamStats));
+        console.log("teamStats", teamStats, type);
+        dispatch(receivedTeamsStat(teamStats, type));
       })
       .catch(e => {
         console.log(e);
