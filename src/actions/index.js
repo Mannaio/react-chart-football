@@ -163,7 +163,8 @@ export function getTeamsDetailById(id) {
           dispatch(receivedTeamsDetail(teams));
           dispatch(receivedLeague(id));
           dispatch(receivedFirstTeamStats(teams[0].team_id));
-          dispatch(getTeamsStats(id, teams[0].team_id));
+          dispatch(getTeamsStats(id, teams[0].team_id, 'home'));
+          dispatch(getTeamsStats(id, teams[0].team_id, 'away'));
         })
         .catch(e => {
           console.log(e);
