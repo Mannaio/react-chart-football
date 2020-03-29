@@ -11,7 +11,6 @@ import {
   RECEIVE_TEAMS_STATS_LOSE_AWAY,
   RECEIVE_LEAGUE,
   RECEIVE_TEAMS_STATS,
-  RECEIVE_FIRST_TEAM_STATS,
   SET_HOME_TEAM,
   SET_AWAY_TEAM
 } from "../actions";
@@ -61,12 +60,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         teamsDetail: action.json,
-        isTeamsDetailLoading: false
-      };
-    case RECEIVE_FIRST_TEAM_STATS:
-      return {
-        ...state,
-        firstTeamStats: action.json,
         isTeamsDetailLoading: false
       };
     case RECEIVE_TEAMS_STATS_WIN_HOME:

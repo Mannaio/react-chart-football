@@ -71,11 +71,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats, isHom
 const mapStateToProps = state => ({
   teamsDetail: state.teamsDetail,
   loading: state.isLeagueDetailLoading,
-  leagueId: state.leagueId,
-  firstTeamStats: state.firstTeamStats,
-  isHomeTeam: state.isHomeTeam,
-  isAwayTeam: state.isAwayTeam,
-  stateTeamsStatsTotalAway: state.stateTeamsStatsTotalAway
+  leagueId: state.leagueId
 });
 
 

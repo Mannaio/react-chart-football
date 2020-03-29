@@ -12,7 +12,6 @@ export const RECEIVE_TEAMS_STATS_LOSE_HOME = "RECEIVE_TEAMS_STATS_LOSE_HOME";
 export const RECEIVE_TEAMS_STATS_LOSE_AWAY = "RECEIVE_TEAMS_STATS_LOSE_AWAy";
 export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
 export const RECEIVE_TEAMS_STATS = "RECEIVE_TEAMS_STATS";
-export const RECEIVE_FIRST_TEAM_STATS = "RECEIVE_FIRST_TEAM_STATS";
 export const SET_HOME_TEAM = "SET_HOME_TEAM";
 export const SET_AWAY_TEAM = "SET_AWAY_TEAM";
 
@@ -43,11 +42,6 @@ export const receivedLeaguesList = json => ({
 
 export const receivedTeamsDetail = json => ({
   type: RECEIVE_TEAMS_DETAIL,
-  json: json
-});
-
-export const receivedFirstTeamStats = json => ({
-  type: RECEIVE_FIRST_TEAM_STATS,
   json: json
 });
 
@@ -93,7 +87,6 @@ export function fetchLeaguesList() {
   return function(dispatch) {
     dispatch(requestLeaguesList());
     dispatch(requestTeamsStat());
-    // dispatch(requestTeamsDetail());
     const api = false;
     if (api) {
       return axios({
@@ -120,12 +113,13 @@ export function fetchLeaguesList() {
         .get("https://www.api-football.com/demo/api/v2/leagues")
         .then(res => {
           let leagues = res.data.api.leagues;
-          /** To initially load the first league details into the details component */
+          /** To initially load the Leagues names in the Leagues component  */
+          dispatch(receivedLeaguesList(leagues));
+          /** To initially load the first league details into the Details component, in the Select Option */
           dispatch(getTeamsDetailById(leagues[0].league_id));
-          //dispatch(getTeamsStats(leagues[0].league_id, leagues[0].league_id[357].team_id[19]));
+          /** To initially load the first teams stats into the Stats component, San Paulo Team in this case */
           dispatch(getTeamsStats(leagues[0].league_id, 19, 'away'));
           dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
-          dispatch(receivedLeaguesList(leagues));
         })
         .catch(e => {
           console.log(e);
@@ -160,9 +154,11 @@ export function getTeamsDetailById(id) {
         .get(`https://www.api-football.com/demo/api/v2/teams/league/${id}`)
         .then(res => {
           let teams = res.data.api.teams;
+          /** This is used as first call to fectch the team names in the fetchLeaguesList*/
           dispatch(receivedTeamsDetail(teams));
+          /** This is used to get the leagueId state when i want to get the team stats selected in Details Component */
           dispatch(receivedLeague(id));
-          dispatch(receivedFirstTeamStats(teams[0].team_id));
+          /* Get the first team stats anytime i click on a different league*/
           dispatch(getTeamsStats(id, teams[0].team_id, 'home'));
           dispatch(getTeamsStats(id, teams[0].team_id, 'away'));
         })

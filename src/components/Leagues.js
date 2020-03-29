@@ -54,7 +54,6 @@ const mapStateToProps = state => ({
   teamsDetail: state.teamsDetail,
   leaguesList: state.leaguesList,
   loading: state.isLeagueListLoading,
-  firstTeamStats: state.firstTeamStats
 });
 
 const mapDispatchToProps = {
