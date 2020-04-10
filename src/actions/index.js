@@ -183,11 +183,14 @@ export function getTeamsStats(league, team, type) {
       })
       .then(res => {
         const {
+          matchs: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
           wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
           draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
           loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
         } = res.data.api.statistics.matchs;
         const teamStats = {
+          teamsMatchsPlayedHome,
+          teamsMatchsPlayedAway,
           teamsStatsWinHome,
           teamsStatsWinAway,
           teamsStatsDrawHome,
@@ -207,11 +210,14 @@ export function getTeamsStats(league, team, type) {
       )
       .then(res => {
         const {
+          matchsPlayed: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
           wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
           draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
           loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
         } = res.data.api.statistics.matchs;
         const teamStats = {
+          teamsMatchsPlayedHome,
+          teamsMatchsPlayedAway,
           teamsStatsWinHome,
           teamsStatsWinAway,
           teamsStatsDrawHome,

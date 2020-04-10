@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 let Stats = ({
+  teamsMatchsPlayedHome,
   teamsStatsWinHome,
   teamsStatsWinAway,
   teamsStatsDrawHome,
@@ -26,6 +27,8 @@ let Stats = ({
                   home.teamsStatsDrawAway * 0 +
                   home.teamsStatsLoseAway * -1
                }
+          <br></br>
+          Tot Matchs Played : { home.teamsMatchsPlayedHome + away.teamsMatchsPlayedAway }
         </div>
       </div>
       <div className="card detail-card border-0 rounded-0 bg-transparent">
@@ -37,6 +40,8 @@ let Stats = ({
                 away.teamsStatsDrawAway * 0 +
                 away.teamsStatsLoseAway * -1
              }
+        <br></br>
+        Tot Matchs Played : { home.teamsMatchsPlayedHome + away.teamsMatchsPlayedAway }
         </div>
       </div>
     </div>
@@ -59,6 +64,8 @@ let Stats = ({
 };
 
 const mapStateToProps = state => ({
+  teamsMatchsPlayedAway: state.teamsMatchsPlayedAway,
+  teamsMatchsPlayedHome: state.teamsMatchsPlayedHome,
   teamsStatsWinHome: state.teamsStatsWinHome,
   teamsStatsWinAway: state.teamsStatsWinAway,
   teamsStatsDrawHome: state.teamsStatsDrawHome,
