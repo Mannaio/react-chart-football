@@ -183,7 +183,7 @@ export function getTeamsStats(league, team, type) {
       })
       .then(res => {
         const {
-          matchs: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
+          matchsPlayed: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
           wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
           draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
           loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
