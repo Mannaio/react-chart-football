@@ -16,7 +16,7 @@ let Stats = ({
   let stats = "";
 
 
-  // Home
+  // Home Team UseStates
 
   const [stateHomeTeamStatsWinHome, setStateHomeTeamStatsWinHome] = useState(
     home.teamsStatsWinHome
@@ -37,29 +37,30 @@ let Stats = ({
     home.teamsStatsLoseAway
   );
 
-  // Away
+  // Away Team UseStates
 
-  // const [stateAwayTeamsStatsWinHome, setStateAwayTeamsStatsWinHome] = useState(
-  //   away.teamsStatsWinHome
-  // );
-  // const [stateAwayTeamsStatsWinAway, setStateAwayTeamsStatsWinAway] = useState(
-  //   away.teamsStatsWinAway
-  // );
-  // const [stateAwayTeamsStatsDrawHome, setStateAwayTeamsStatsDrawHome] = useState(
-  //   away.teamsStatsDrawHome
-  // );
-  // const [stateAwayTeamsStatsDrawAway, setStateAwayTeamsStatsDrawAway] = useState(
-  //   away.teamsStatsDrawAway
-  // );
-  // const [stateAwayTeamsStatsLoseHome, setStateAwayTeamsStatsLoseHome] = useState(
-  //   away.teamsStatsLoseHome
-  // );
-  // const [stateAwayTeamsStatsLoseAway, setStateAwayTeamsStatsLoseAway] = useState(
-  //   away.teamsStatsLoseAway
-  // );
+  const [stateAwayTeamStatsWinHome, setStateAwayTeamStatsWinHome] = useState(
+    away.teamsStatsWinHome
+  );
+  const [stateAwayTeamStatsWinAway, setStateAwayTeamStatsWinAway] = useState(
+    away.teamsStatsWinAway
+  );
+  const [stateAwayTeamStatsDrawHome, setStateAwayTeamStatsDrawHome] = useState(
+    away.teamsStatsDrawHome
+  );
+  const [stateAwayTeamStatsDrawAway, setStateAwayTeamStatsDrawAway] = useState(
+    away.teamsStatsDrawAway
+  );
+  const [stateAwayTeamStatsLoseHome, setStateAwayTeamStatsLoseHome] = useState(
+    away.teamsStatsLoseHome
+  );
+  const [stateAwayTeamStatsLoseAway, setStateAwayTeamStatsLoseAway] = useState(
+    away.teamsStatsLoseAway
+  );
 
+  // Home Team Initial States
 
-  const initialHomeStates = [
+  const initialHomeTeamStates = [
     stateHomeTeamStatsWinHome,
     stateHomeTeamStatsWinAway,
     stateHomeTeamStatsDrawHome,
@@ -68,101 +69,131 @@ let Stats = ({
     stateHomeTeamStatsLoseAway
   ];
 
+  // Away Team Initial States
+
+  const initialAwayTeamStates = [
+    stateAwayTeamStatsWinHome,
+    stateAwayTeamStatsWinAway,
+    stateAwayTeamStatsDrawHome,
+    stateAwayTeamStatsDrawAway,
+    stateAwayTeamStatsLoseHome,
+    stateAwayTeamStatsLoseAway
+  ];
+
+  // Home Team Total Calculation UseState
+
   const [stateHomeTeamStatsTotal, setHomeStateTeamStatsTotal] = useState(
-    initialHomeStates
+    initialHomeTeamStates
   );
 
-  // Away
+  // Away Team Total Calculation UseState
 
-  // const [stateAwayTeamStatsTotal, setAwayStateTeamStatsTotal] = useState(
-  //   initialValue
-  // );
+  const [stateAwayTeamStatsTotal, setAwayStateTeamStatsTotal] = useState(
+    initialAwayTeamStates
+  );
+
+  // Home Team Total Calculation useEffect
 
   useEffect(() => {
-    if (
-      typeof (stateHomeTeamStatsWinHome &&
-        stateHomeTeamStatsWinAway &&
-        stateHomeTeamStatsDrawHome &&
-        stateHomeTeamStatsDrawAway,
-        stateHomeTeamStatsLoseHome,
-        stateHomeTeamStatsLoseAway) == "number"
-    ) {
-      const homeNewteamsStatsTotal =
+      const homeNewteamStatsTotal =
         stateHomeTeamStatsWinHome +
         stateHomeTeamStatsWinAway +
         stateHomeTeamStatsDrawHome +
         stateHomeTeamStatsDrawAway +
         stateHomeTeamStatsLoseHome +
         stateHomeTeamStatsLoseAway;
-        setHomeStateTeamStatsTotal(homeNewteamsStatsTotal);
-    }
-  }, [initialHomeStates]);
+        setHomeStateTeamStatsTotal(homeNewteamStatsTotal);
+  },[initialHomeTeamStates]);
+
+  // Away Team Total Calculation useEffect
 
   useEffect(() => {
-    if (typeof home.teamsStatsWinHome == "number") {
-      const newteamsStatsWinHome = home.teamsStatsWinHome * 0;
-      setStateHomeTeamStatsWinHome(newteamsStatsWinHome);
-    }
+      const awayNewteamStatsTotal =
+        stateAwayTeamStatsWinHome +
+        stateAwayTeamStatsWinAway +
+        stateAwayTeamStatsDrawHome +
+        stateAwayTeamStatsDrawAway +
+        stateAwayTeamStatsLoseHome +
+        stateAwayTeamStatsLoseAway;
+        setAwayStateTeamStatsTotal(awayNewteamStatsTotal);
+  },[initialAwayTeamStates]);
+
+  // Home Team useEffect
+
+  useEffect(() => {
+    const newteamStatsWinHome = home.teamsStatsWinHome * 0;
+    setStateHomeTeamStatsWinHome(newteamStatsWinHome);
   }, [home.teamsStatsWinHome]);
 
   useEffect(() => {
-    if (typeof home.teamsStatsWinAway == "number") {
-      const newteamsStatsWinAway = home.teamsStatsWinAway * 2;
-      setStateHomeTeamStatsWinAway(newteamsStatsWinAway);
-    }
+    const newteamStatsWinAway = home.teamsStatsWinAway * 2;
+    setStateHomeTeamStatsWinAway(newteamStatsWinAway);
   }, [home.teamsStatsWinAway]);
 
   useEffect(() => {
-    if (typeof home.teamsStatsDrawHome == "number") {
-      const newteamsStatsDrawHome = home.teamsStatsDrawHome * -2;
-      setStateHomeTeamStatsDrawHome(newteamsStatsDrawHome);
-    }
+    const newteamStatsDrawHome = home.teamsStatsDrawHome * -2;
+    setStateHomeTeamStatsDrawHome(newteamStatsDrawHome);
   }, [home.teamsStatsDrawHome]);
 
   useEffect(() => {
-    if (typeof home.teamsStatsDrawAway == "number") {
-      const newteamsStatsDrawAway = home.teamsStatsDrawAway * 0;
-      setStateHomeTeamStatsDrawAway(newteamsStatsDrawAway);
-    }
+    const newteamStatsDrawAway = home.teamsStatsDrawAway * 0;
+    setStateHomeTeamStatsDrawAway(newteamStatsDrawAway);
   }, [home.teamsStatsDrawAway]);
 
   useEffect(() => {
-    if (typeof home.teamsStatsLoseHome == "number") {
-      const newteamsStatsLoseHome = home.teamsStatsLoseHome * -3;
-      setStateHomeTeamStatsLoseHome(newteamsStatsLoseHome);
-    }
-  }, [home.teamsStatsLoseHome]);
+    const newteamStatsLoseHome = home.teamsStatsLoseHome * -3;
+    setStateHomeTeamStatsLoseHome(newteamStatsLoseHome);
+  },[home.teamsStatsLoseHome]);
 
   useEffect(() => {
-    if (typeof home.teamsStatsLoseAway == "number") {
-      const newteamsStatsLoseAway = home.teamsStatsLoseAway * -1;
-      setStateHomeTeamStatsLoseAway(newteamsStatsLoseAway);
-    }
-  }, [home.teamsStatsLoseAway]);
+    const newteamStatsLoseAway = home.teamsStatsLoseAway * -1;
+    setStateHomeTeamStatsLoseAway(newteamStatsLoseAway);
+  },[home.teamsStatsLoseAway]);
 
-  if (
-    typeof (
-      home.teamsStatsWinHome &&
-      home.teamsStatsWinAway &&
-      home.teamsStatsDrawHome &&
-      home.teamsStatsDrawAway &&
-      home.teamsStatsLoseHome &&
-      home.teamsStatsLoseAway
-    ) == "number"
-  ) {
-    stats = (
-      <div className="col-sm-6">
-        <div className="card detail-card border-0 rounded-0 bg-transparent">
-          <div className="card-body text-decoration-none text-secondary">
-            Tot:{stateHomeTeamStatsTotal}
-          </div>
-          <div className="card-body text-decoration-none text-secondary">
-            Tot:
-          </div>
+  // Away Team useEffect
+
+  useEffect(() => {
+    const newteamStatsWinHome = away.teamsStatsWinHome * 0;
+    setStateAwayTeamStatsWinHome(newteamStatsWinHome);
+  },[away.teamsStatsWinHome]);
+
+  useEffect(() => {
+    const newteamStatsWinAway = away.teamsStatsWinAway * 2;
+    setStateAwayTeamStatsWinAway(newteamStatsWinAway);
+  },[away.teamsStatsWinAway]);
+
+  useEffect(() => {
+    const newteamStatsDrawHome = away.teamsStatsDrawHome * -2;
+    setStateAwayTeamStatsDrawHome(newteamStatsDrawHome);
+  },[away.teamsStatsDrawHome]);
+
+  useEffect(() => {
+    const newteamStatsDrawAway = away.teamsStatsDrawAway * 0;
+    setStateAwayTeamStatsDrawAway(newteamStatsDrawAway);
+  },[away.teamsStatsDrawAway]);
+
+  useEffect(() => {
+    const newteamStatsLoseHome = away.teamsStatsLoseHome * -3;
+    setStateAwayTeamStatsLoseHome(newteamStatsLoseHome);
+  },[away.teamsStatsLoseHome]);
+
+  useEffect(() => {
+    const newteamStatsLoseAway = away.teamsStatsLoseAway * -1;
+    setStateAwayTeamStatsLoseAway(newteamStatsLoseAway);
+  },[away.teamsStatsLoseAway]);
+
+  stats = (
+    <div className="col-sm-6">
+      <div className="card detail-card border-0 rounded-0 bg-transparent">
+        <div className="card-body text-decoration-none text-secondary">
+          Tot:{stateHomeTeamStatsTotal}
+        </div>
+        <div className="card-body text-decoration-none text-secondary">
+          Tot:{stateAwayTeamStatsTotal}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 
   if (loading) {
     stats = (
