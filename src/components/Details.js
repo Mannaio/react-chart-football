@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
-export const RECEIVE_TEAM_TYPE = "RECEIVE_TEAM_TYPE";
-
 
 let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats, isHomeTeam, isAwayTeam, stateTeamsStatsTotalAway}) => {
 
