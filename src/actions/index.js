@@ -171,66 +171,43 @@ export function getTeamsDetailById(id) {
 
 export function getTeamsStats(league, team, type) {
   return function(dispatch) {
-    const api = false;
-    if (api) {
-      return axios({
-        method: "get",
-        url: `https://api-football-v1.p.rapidapi.com/v2/statistics/${league}/${team}`,
-        headers: {
-          "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-          "x-rapidapi-key": ""
-        }
-      })
-      .then(res => {
-        const {
-          matchsPlayed: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
-          wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
-          draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
-          loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
-        } = res.data.api.statistics.matchs;
-        const teamStats = {
-          teamsMatchsPlayedHome,
-          teamsMatchsPlayedAway,
-          teamsStatsWinHome,
-          teamsStatsWinAway,
-          teamsStatsDrawHome,
-          teamsStatsDrawAway,
-          teamsStatsLoseHome,
-          teamsStatsLoseAway
-         }
-        dispatch(receivedTeamsStat(teamStats, type));
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    } else {
-      return axios
-      .get(
-        `https://www.api-football.com/demo/api/v2/statistics/${league}/${team}`
-      )
-      .then(res => {
-        const {
-          matchsPlayed: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
-          wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
-          draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
-          loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
-        } = res.data.api.statistics.matchs;
-        const teamStats = {
-          teamsMatchsPlayedHome,
-          teamsMatchsPlayedAway,
-          teamsStatsWinHome,
-          teamsStatsWinAway,
-          teamsStatsDrawHome,
-          teamsStatsDrawAway,
-          teamsStatsLoseHome,
-          teamsStatsLoseAway
-         }
-        console.log("teamStats", teamStats, type);
-        dispatch(receivedTeamsStat(teamStats, type));
-      })
-      .catch(e => {
-        console.log(e);
-      });
+
+    let URLs= ["https://www.api-football.com/demo/api/v2/statistics/524/40/2019-08-30",
+              "https://www.api-football.com/demo/api/v2/statistics/524/40/2019-09-30",
+              "https://www.api-football.com/demo/api/v2/statistics/524/40/2019-10-30"]
+
+    const getAllData = (URLs) => {
+      return Promise.all(URLs.map(fetchData));
     }
-  };
+
+    const fetchData = (URL) => {
+      return axios
+        .get(URL)
+        .then(res => {
+          const {
+            matchsPlayed: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
+            wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
+            draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
+            loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
+          } = res.data.api.statistics.matchs;
+          const teamStats = {
+            teamsMatchsPlayedHome,
+            teamsMatchsPlayedAway,
+            teamsStatsWinHome,
+            teamsStatsWinAway,
+            teamsStatsDrawHome,
+            teamsStatsDrawAway,
+            teamsStatsLoseHome,
+            teamsStatsLoseAway
+           }
+          dispatch(receivedTeamsStat(teamStats, type));
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+
+    getAllData(URLs).then(resp=>{console.log(resp)}).catch(e=>{console.log(e)})
+
+  }
 }
