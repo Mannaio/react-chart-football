@@ -65,7 +65,7 @@ let Stats = ({
 
   const initialHomeTeamMatchsPlayed = [
     home.teamsMatchsPlayedHome,
-    away.teamsMatchsPlayedHome,
+    home.teamsMatchsPlayedAway,
   ];
 
   const [stateHomeTeamStatsMatchsPlayed, setStateHomeStatsMatchsPlayed] = useState(
@@ -75,8 +75,8 @@ let Stats = ({
   // Away Team Initial Matchs Played and UseState
 
   const initialAwayTeamMatchsPlayed = [
-    home.teamsMatchsPlayedHome,
     away.teamsMatchsPlayedHome,
+    away.teamsMatchsPlayedAway,
   ];
 
   const [stateAwayTeamStatsMatchsPlayed, setStateAwayStatsMatchsPlayed] = useState(
@@ -88,7 +88,7 @@ let Stats = ({
    useEffect(() => {
        const homeNewteamStatsMatchsPlayed =
          home.teamsMatchsPlayedHome +
-         home.teamsMatchsPlayedHome;
+         home.teamsMatchsPlayedAway;
          setStateHomeStatsMatchsPlayed(homeNewteamStatsMatchsPlayed);
    },[initialHomeTeamMatchsPlayed]);
 
@@ -98,7 +98,7 @@ let Stats = ({
    useEffect(() => {
        const awayNewteamStatsMatchsPlayed =
          away.teamsMatchsPlayedHome +
-         away.teamsMatchsPlayedHome;
+         away.teamsMatchsPlayedAway;
          setStateAwayStatsMatchsPlayed(awayNewteamStatsMatchsPlayed);
    },[initialAwayTeamMatchsPlayed]);
 
