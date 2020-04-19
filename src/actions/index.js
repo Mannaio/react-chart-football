@@ -172,12 +172,11 @@ export function getTeamsDetailById(id) {
 export function getTeamsStats(league, team, type) {
   return function(dispatch) {
 
-    let URLs= ["https://www.api-football.com/demo/api/v2/statistics/524/40/2019-08-30",
-              "https://www.api-football.com/demo/api/v2/statistics/524/40/2019-09-30",
-              "https://www.api-football.com/demo/api/v2/statistics/524/40/2019-10-30"]
+    const url = "https://www.api-football.com/demo/api/v2/statistics";
+    let dates = ["2019-08-30", "2019-09-30", "2019-10-30"]
 
-    const getAllData = (URLs) => {
-      return Promise.all(URLs.map(fetchData));
+    const getAllData = (dates, i) => {
+      return Promise.all(dates.map(x => url + '/' + league + '/' + team + '/' + x).map(fetchData));
     }
 
     const fetchData = (URL) => {
@@ -207,7 +206,7 @@ export function getTeamsStats(league, team, type) {
         });
     }
 
-    getAllData(URLs).then(resp=>{console.log(resp)}).catch(e=>{console.log(e)})
+    getAllData(dates).then(resp=>{console.log(resp)}).catch(e=>{console.log(e)})
 
   }
 }
