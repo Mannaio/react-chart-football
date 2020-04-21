@@ -110,7 +110,7 @@ export function fetchLeaguesList() {
         });
     } else {
       return axios
-        .get("https://www.api-football.com/demo/api/v2/leagues")
+        .get("https://www.api-football.com/demo/v2/leagues/")
         .then(res => {
           let leagues = res.data.api.leagues;
           /** To initially load the Leagues names in the Leagues component  */
@@ -151,7 +151,7 @@ export function getTeamsDetailById(id) {
         });
     } else {
       return axios
-        .get(`https://www.api-football.com/demo/api/v2/teams/league/${id}`)
+        .get(`https://www.api-football.com/demo/v2/teams/league/${id}`)
         .then(res => {
           let teams = res.data.api.teams;
           /** This is used as first call to fectch the team names in the fetchLeaguesList*/
@@ -172,7 +172,7 @@ export function getTeamsDetailById(id) {
 export function getTeamsStats(league, team, type) {
   return function(dispatch) {
 
-    const url = "https://www.api-football.com/demo/api/v2/statistics";
+    const url = "https://www.api-football.com/demo/v2/statistics";
     let dates = ["2019-08-30", "2019-09-30", "2019-10-30"]
 
     const getAllData = (dates, i) => {
@@ -184,14 +184,13 @@ export function getTeamsStats(league, team, type) {
         .get(URL)
         .then(res => {
           const {
-            matchsPlayed: { home: teamsMatchsPlayedHome, away: teamsMatchsPlayedAway},
+            matchsPlayed: { total: teamsTotalMatchsPlayed},
             wins: { home: teamsStatsWinHome, away: teamsStatsWinAway },
             draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
             loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
           } = res.data.api.statistics.matchs;
           const teamStats = {
-            teamsMatchsPlayedHome,
-            teamsMatchsPlayedAway,
+            teamsTotalMatchsPlayed,
             teamsStatsWinHome,
             teamsStatsWinAway,
             teamsStatsDrawHome,

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 let Stats = ({
-  teamsMatchsPlayedHome,
-  teamsMatchsPlayedAway,
+  teamsTotalMatchsPlayed,
   teamsStatsWinHome,
   teamsStatsWinAway,
   teamsStatsDrawHome,
@@ -39,7 +38,6 @@ let Stats = ({
     home.teamsStatsLoseAway
   );
 
-
   // Away Team UseStates
 
   const [stateAwayTeamStatsWinHome, setStateAwayTeamStatsWinHome] = useState(
@@ -61,46 +59,6 @@ let Stats = ({
     away.teamsStatsLoseAway
   );
 
-  // Home Team Initial Matchs Played and UseState
-
-  const initialHomeTeamMatchsPlayed = [
-    home.teamsMatchsPlayedHome,
-    home.teamsMatchsPlayedAway,
-  ];
-
-  const [stateHomeTeamStatsMatchsPlayed, setStateHomeStatsMatchsPlayed] = useState(
-    initialHomeTeamMatchsPlayed
-  );
-
-  // Away Team Initial Matchs Played and UseState
-
-  const initialAwayTeamMatchsPlayed = [
-    away.teamsMatchsPlayedHome,
-    away.teamsMatchsPlayedAway,
-  ];
-
-  const [stateAwayTeamStatsMatchsPlayed, setStateAwayStatsMatchsPlayed] = useState(
-    initialAwayTeamMatchsPlayed
-  );
-
-  // Home Team Matchs Played useEffect
-
-   useEffect(() => {
-       const homeNewteamStatsMatchsPlayed =
-         home.teamsMatchsPlayedHome +
-         home.teamsMatchsPlayedAway;
-         setStateHomeStatsMatchsPlayed(homeNewteamStatsMatchsPlayed);
-   },[initialHomeTeamMatchsPlayed]);
-
-
-  // Away Team Matchs Played useEffect
-
-   useEffect(() => {
-       const awayNewteamStatsMatchsPlayed =
-         away.teamsMatchsPlayedHome +
-         away.teamsMatchsPlayedAway;
-         setStateAwayStatsMatchsPlayed(awayNewteamStatsMatchsPlayed);
-   },[initialAwayTeamMatchsPlayed]);
 
   // Home Team Initial States
 
@@ -231,11 +189,11 @@ let Stats = ({
       <div className="card detail-card border-0 rounded-0 bg-transparent">
         <div className="card-body text-decoration-none text-secondary">
           Tot:{stateHomeTeamStatsTotal} /
-          Total Matchs Played: {stateHomeTeamStatsMatchsPlayed}
+          Total Matchs Played: {teamsTotalMatchsPlayed}
         </div>
         <div className="card-body text-decoration-none text-secondary">
           Tot:{stateAwayTeamStatsTotal} /
-          Total Matchs Played: {stateAwayTeamStatsMatchsPlayed}
+          Total Matchs Played: {teamsTotalMatchsPlayed}
         </div>
       </div>
     </div>
@@ -257,8 +215,7 @@ let Stats = ({
 };
 
 const mapStateToProps = state => ({
-  teamsMatchsPlayedAway: state.teamsMatchsPlayedAway,
-  teamsMatchsPlayedHome: state.teamsMatchsPlayedHome,
+  teamsTotalMatchsPlayed: state.teamsTotalMatchsPlayed,
   teamsStatsWinHome: state.teamsStatsWinHome,
   teamsStatsWinAway: state.teamsStatsWinAway,
   teamsStatsDrawHome: state.teamsStatsDrawHome,
