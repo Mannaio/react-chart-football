@@ -189,14 +189,22 @@ export function getTeamsStats(league, team, type) {
             draws: { home: teamsStatsDrawHome, away: teamsStatsDrawAway },
             loses: { home: teamsStatsLoseHome, away: teamsStatsLoseAway }
           } = res.data.api.statistics.matchs;
+          const matchs = teamsTotalMatchsPlayed;
+          const winHome = teamsStatsWinHome * 0;
+          const winHAway = teamsStatsWinAway * 2;
+          const drawHome = teamsStatsDrawHome * -2;
+          const drawAway = teamsStatsDrawAway * 0;
+          const loseHome = teamsStatsLoseHome * -3;
+          const loseAway = teamsStatsLoseAway * -1;
+          console.log(matchs, winHome, winHAway, drawHome, drawAway, loseHome, loseAway);
           const teamStats = {
-            teamsTotalMatchsPlayed,
-            teamsStatsWinHome,
-            teamsStatsWinAway,
-            teamsStatsDrawHome,
-            teamsStatsDrawAway,
-            teamsStatsLoseHome,
-            teamsStatsLoseAway
+            matchs,
+            winHome,
+            winHAway,
+            drawHome,
+            drawAway,
+            loseHome,
+            loseAway
            }
           dispatch(receivedTeamsStat(teamStats, type));
         })
