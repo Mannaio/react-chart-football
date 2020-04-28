@@ -197,7 +197,7 @@ export function getTeamsStats(league, team, type) {
           const loseHome = teamsStatsLoseHome * -3;
           const loseAway = teamsStatsLoseAway * -1;
           const totalCal = winHome + winHAway + drawHome + drawAway + loseHome + loseAway
-          console.log(matchsPlayed, matchsPlayed);
+          console.log(['matchs:', matchsPlayed, 'Team:', totalCal]);
           const teamStats = {
             matchsPlayed,
             totalCal
