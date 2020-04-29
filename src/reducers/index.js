@@ -3,30 +3,14 @@ import {
   RECEIVE_LEAGUES_LIST,
   RECEIVE_TEAMS_DETAIL,
   REQUEST_TEAMS_STATS,
-  RECEIVE_TEAMS_STATS_WIN_HOME,
-  RECEIVE_TEAMS_STATS_WIN_AWAY,
-  RECEIVE_TEAMS_STATS_DRAW_HOME,
-  RECEIVE_TEAMS_STATS_DRAW_AWAY,
-  RECEIVE_TEAMS_STATS_LOSE_HOME,
-  RECEIVE_TEAMS_STATS_LOSE_AWAY,
-  RECEIVE_LEAGUE,
   RECEIVE_TEAMS_STATS,
-  SET_HOME_TEAM,
-  SET_AWAY_TEAM
+  RECEIVE_LEAGUE,
 } from "../actions";
 
 const initialState = {
-  league: [],
+  leagueId: [],
   leaguesList: [],
   teamsDetail: [],
-  teamStats: [],
-  teamsStatsWinHome: [],
-  teamsStatsWinAway: [],
-  teamsStatsDrawHome: [],
-  teamsStatsDrawAway: [],
-  teamsStatsLoseHome: [],
-  teamsStatsLoseAway: [],
-  firstTeamStats: [],
   isLeagueListLoading: false,
   isTeamsDetailLoading: false,
   isTeamsStatsLoading: false,
@@ -34,18 +18,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_HOME_TEAM:
-      return { ...state, isHomeTeam: true, isAwayTeam: false };
-    case SET_AWAY_TEAM:
-      return { ...state, isHomeTeam: false, isAwayTeam: true };
     case REQUEST_LEAGUES_LIST:
       return { ...state, isLeagueListLoading: true };
     case RECEIVE_LEAGUES_LIST:
       return { ...state, leaguesList: action.json, isLeagueListLoading: false };
-    case REQUEST_TEAMS_STATS:
-      return { ...state, isTeamsStatsLoading: true };
     case RECEIVE_LEAGUE:
       return { ...state, leagueId: action.json };
+    case REQUEST_TEAMS_STATS:
+      return { ...state, isTeamsStatsLoading: true };
     case RECEIVE_TEAMS_STATS:
       console.log("Action", action);
       return {
@@ -61,42 +41,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         teamsDetail: action.json,
         isTeamsDetailLoading: false
-      };
-    case RECEIVE_TEAMS_STATS_WIN_HOME:
-      return {
-        ...state,
-        teamsStatsWinHome: action.json,
-        isTeamsStatsLoading: false
-      };
-    case RECEIVE_TEAMS_STATS_WIN_AWAY:
-      return {
-        ...state,
-        teamsStatsWinAway: action.json,
-        isTeamsStatsLoading: false
-      };
-    case RECEIVE_TEAMS_STATS_DRAW_HOME:
-      return {
-        ...state,
-        teamsStatsDrawHome: action.json,
-        isTeamsStatsLoading: false
-      };
-    case RECEIVE_TEAMS_STATS_DRAW_AWAY:
-      return {
-        ...state,
-        teamsStatsDrawAway: action.json,
-        isTeamsStatsLoading: false
-      };
-    case RECEIVE_TEAMS_STATS_LOSE_HOME:
-      return {
-        ...state,
-        teamsStatsLoseHome: action.json,
-        isTeamsStatsLoading: false
-      };
-    case RECEIVE_TEAMS_STATS_LOSE_AWAY:
-      return {
-        ...state,
-        teamsStatsLoseAway: action.json,
-        isTeamsStatsLoading: false
       };
     default:
       return state;

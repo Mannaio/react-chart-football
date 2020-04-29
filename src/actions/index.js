@@ -1,30 +1,11 @@
 import axios from "axios";
 export const REQUEST_LEAGUES_LIST = "REQUEST_LEAGUES_LIST";
 export const RECEIVE_LEAGUES_LIST = "RECEIVE_LEAGUES_LIST";
+// export const REQUEST_TEAMS_DETAIL = "REQUEST_TEAMS_DETAIL"
 export const RECEIVE_TEAMS_DETAIL = "RECEIVE_LEAGUE_DETAIL";
 export const REQUEST_TEAMS_STATS = "REQUEST_TEAMS_STAT";
-// export const REQUEST_TEAMS_DETAIL = "REQUEST_TEAMS_DETAIL"
-export const RECEIVE_TEAMS_STATS_WIN_HOME = "RECEIVE_TEAMS_STATS_WIN_HOME";
-export const RECEIVE_TEAMS_STATS_WIN_AWAY = "RECEIVE_TEAMS_STATS_WIN_AWAY";
-export const RECEIVE_TEAMS_STATS_DRAW_HOME = "RECEIVE_TEAMS_STATS_DRAW_HOME";
-export const RECEIVE_TEAMS_STATS_DRAW_AWAY = "RECEIVE_TEAMS_STATS_DRAW_AWAY";
-export const RECEIVE_TEAMS_STATS_LOSE_HOME = "RECEIVE_TEAMS_STATS_LOSE_HOME";
-export const RECEIVE_TEAMS_STATS_LOSE_AWAY = "RECEIVE_TEAMS_STATS_LOSE_AWAy";
-export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
 export const RECEIVE_TEAMS_STATS = "RECEIVE_TEAMS_STATS";
-export const SET_HOME_TEAM = "SET_HOME_TEAM";
-export const SET_AWAY_TEAM = "SET_AWAY_TEAM";
-
-// export const requestTeamsDetail = leagueId => ({
-//   type: REQUEST_TEAMS_DETAIL,
-//   leagueId
-// });
-
-export const receivedTeamsStat = (json, type) => ({
-  type: RECEIVE_TEAMS_STATS,
-  json: json,
-  teamtype: type,
-});
+export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
 
 export const receivedLeague = json => ({
   type: RECEIVE_LEAGUE,
@@ -51,35 +32,12 @@ export const requestTeamsStat = (leagueId, teamId) => ({
   teamId
 });
 
-export const receivedTeamsStatWinHome = json => ({
-  type: RECEIVE_TEAMS_STATS_WIN_HOME,
-  json: json
+export const receivedTeamsStat = (json, type) => ({
+  type: RECEIVE_TEAMS_STATS,
+  json: json,
+  teamtype: type,
 });
 
-export const receivedTeamsStatWinAway = json => ({
-  type: RECEIVE_TEAMS_STATS_WIN_AWAY,
-  json: json
-});
-
-export const receivedTeamsStatDrawHome = json => ({
-  type: RECEIVE_TEAMS_STATS_DRAW_HOME,
-  json: json
-});
-
-export const receivedTeamsStatDrawAway = json => ({
-  type: RECEIVE_TEAMS_STATS_DRAW_AWAY,
-  json: json
-});
-
-export const receivedTeamsStatLoseHome = json => ({
-  type: RECEIVE_TEAMS_STATS_LOSE_HOME,
-  json: json
-});
-
-export const receivedTeamsStatLoseAway = json => ({
-  type: RECEIVE_TEAMS_STATS_LOSE_AWAY,
-  json: json
-});
 
 // API Call
 
@@ -173,7 +131,8 @@ export function getTeamsStats(league, team, type) {
   return function(dispatch) {
 
     const url = "https://www.api-football.com/demo/v2/statistics";
-    let dates = ["2019-08-30", "2019-09-30", "2019-10-30"]
+    let dates = ["2019-08-30", "2019-09-30", "2019-10-30"];
+    const data = [];
 
     const getAllData = (dates, i) => {
       return Promise.all(dates.map(x => url + '/' + league + '/' + team + '/' + x).map(fetchData));
@@ -197,7 +156,7 @@ export function getTeamsStats(league, team, type) {
           const loseHome = teamsStatsLoseHome * -3;
           const loseAway = teamsStatsLoseAway * -1;
           const totalCal = winHome + winHAway + drawHome + drawAway + loseHome + loseAway
-          console.log(['matchs:', matchsPlayed, 'Team:', totalCal]);
+          console.log('matchs:', matchsPlayed, type + ':', totalCal);
           const teamStats = {
             matchsPlayed,
             totalCal
