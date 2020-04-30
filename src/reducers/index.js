@@ -11,6 +11,7 @@ const initialState = {
   leagueId: [],
   leaguesList: [],
   teamsDetail: [],
+  teamsStats:[],
   isLeagueListLoading: false,
   isTeamsDetailLoading: false,
   isTeamsStatsLoading: false,
@@ -27,7 +28,7 @@ const reducer = (state = initialState, action) => {
     case REQUEST_TEAMS_STATS:
       return { ...state, isTeamsStatsLoading: true };
     case RECEIVE_TEAMS_STATS:
-      console.log("Action", action);
+      // console.log("Action", action);
       return {
         ...state,
         [action.teamtype]:{
