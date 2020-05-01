@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
 
-let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamStats, isHomeTeam, isAwayTeam, stateTeamsStatsTotalAway}) => {
+let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
 
   const [selectedHomeOption, setSelectedHomeOption] = useState("");
   const [selectedAwayOption, setSelectedAwayOption] = useState("");

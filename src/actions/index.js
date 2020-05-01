@@ -60,7 +60,7 @@ export function fetchLeaguesList() {
           /** To initially load the first league details into the details component */
           dispatch(getTeamsDetailById(leagues[0].league_id));
           //dispatch(getTeamsStats(leagues[0].league_id, leagues[0].league_id[357].team_id[19]));
-          dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
+          // dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
           dispatch(receivedLeaguesList(leagues));
         })
         .catch(e => {
@@ -76,8 +76,6 @@ export function fetchLeaguesList() {
           /** To initially load the first league details into the Details component, in the Select Option */
           dispatch(getTeamsDetailById(leagues[0].league_id));
           /** To initially load the first teams stats into the Stats component, San Paulo Team in this case */
-          dispatch(getTeamsStats(leagues[0].league_id, 19, 'away'));
-          dispatch(getTeamsStats(leagues[0].league_id, 19, 'home'));
         })
         .catch(e => {
           console.log(e);

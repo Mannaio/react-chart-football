@@ -15,10 +15,12 @@ let Stats = ({
     <div className="col-sm-6">
       <div className="card detail-card border-0 rounded-0 bg-transparent">
         <div className="card-body text-decoration-none text-secondary">
+          Team:
           Tot:{home.totalCal} /
           Total Matchs Played: {home.matchsPlayed}
         </div>
         <div className="card-body text-decoration-none text-secondary">
+          Team:
           Tot:{away.totalCal} /
           Total Matchs Played: {away.matchsPlayed}
         </div>
