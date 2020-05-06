@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
@@ -7,16 +7,33 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
 
   const [selectedHomeOption, setSelectedHomeOption] = useState("");
   const [selectedAwayOption, setSelectedAwayOption] = useState("");
+  const [selectedHomeName, setSelectedHomeName] = useState("");
+  const [selectedAwayName, setSelectedAwayName] = useState("");
+
+  const [items, setItemsName] = useState([teamsDetail]);
+
+  // console.log('items:', itemsNames)
+
+  useEffect(() => {
+    const newItemsNames = teamsDetail;
+    setItemsName(newItemsNames);
+  }, [teamsDetail]);
+
+  console.log("Team names", items);
 
   const selectHomeTeamStat = evt => {
     const { value } = evt.target;
+    const item = items.find(item => item.team_id == value);
     setSelectedHomeOption(value);
+    setSelectedHomeName(item.name);
     getStats(leagueId, value, 'home');
   };
 
   const selectAwayTeamStat = evt => {
     const { value } = evt.target;
+    const item = items.find(item => item.team_id == value);
     setSelectedAwayOption(value);
+    setSelectedAwayName(item.name);
     getStats(leagueId, value, 'away');
   };
 
@@ -25,7 +42,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
   if (teamsDetail.length) {
     details = (
       <>
-        <strong>Home Team</strong>
+        <strong>Home Team</strong>{selectedHomeName}
         <select value={selectedHomeOption} onChange={selectHomeTeamStat}>
           {teamsDetail && teamsDetail.length > 0
             ? teamsDetail.map(item => (
@@ -36,7 +53,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
             : null}
         </select>
         <>
-          <strong>Away Team</strong>
+          <strong>Away Team</strong>{selectedAwayName}
           <select value={selectedAwayOption} onChange={selectAwayTeamStat}>
             {teamsDetail && teamsDetail.length > 0
               ? teamsDetail.map(item => (

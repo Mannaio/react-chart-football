@@ -1,4 +1,5 @@
-import React, {useEffect} from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import {connect} from "react-redux";
 import {fetchLeaguesList, getTeamsDetailById, getTeamsStats} from "../actions";
 
@@ -15,6 +16,16 @@ let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail}
 
   let leagues = "";
   let dummyImage = "https://placeholder.pics/svg/640x480/ECEEFF-D0E3FF/FF0000-FFFFFF/Image%20not%20found";
+
+  // const [itemsLeagues, setItemsleague] = useState([leaguesList]);
+  //
+  // useEffect(() => {
+  //   const newItemsLeagues = leaguesList;
+  //   setItemsleague(newItemsLeagues);
+  // }, [leaguesList]);
+  //
+  // console.log("league list", itemsLeagues);
+
 
   if (leaguesList.length && teamsDetail.length) {
     leagues = leaguesList.map((item, index) => (
