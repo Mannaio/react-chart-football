@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
-
 let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
 
   const [selectedHomeOption, setSelectedHomeOption] = useState("");
@@ -12,14 +11,10 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
 
   const [items, setItemsName] = useState([teamsDetail]);
 
-  // console.log('items:', itemsNames)
-
   useEffect(() => {
     const newItemsNames = teamsDetail;
     setItemsName(newItemsNames);
   }, [teamsDetail]);
-
-  console.log("Team names", items);
 
   const selectHomeTeamStat = evt => {
     const { value } = evt.target;
