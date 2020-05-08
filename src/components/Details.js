@@ -16,12 +16,22 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
     setItemsName(newItemsNames);
   }, [teamsDetail]);
 
+  // const selectHomeTeamStat = (evt) => {
+  //   const { value } = evt.target;
+  //   setSelectedHomeOption(value);
+  // }
+  //
+  // useEffect(() => {
+  //   debugger
+  //   const item = items.find((item) => item.team_id == selectedHomeOption);
+  //   getStats(leagueId, selectedHomeOption, item.name);
+  // }, [leagueId, items, selectedHomeOption]);
+
   const selectHomeTeamStat = evt => {
     const { value } = evt.target;
     const item = items.find(item => item.team_id == value);
     setSelectedHomeOption(value);
     setSelectedHomeName(item.name);
-    getStats(leagueId, value, 'home');
   };
 
   const selectAwayTeamStat = evt => {
@@ -29,8 +39,17 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
     const item = items.find(item => item.team_id == value);
     setSelectedAwayOption(value);
     setSelectedAwayName(item.name);
-    getStats(leagueId, value, 'away');
   };
+
+  useEffect(() => {
+    console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
+    getStats(leagueId, selectedHomeOption, selectedHomeName);
+  },[selectedHomeName, selectedHomeOption]);
+
+  useEffect(() => {
+    console.log('Away Team name:', selectedAwayName, 'Away Team Option:', selectedAwayOption);
+    getStats(leagueId, selectedAwayOption, selectedAwayName);
+  },[selectedAwayOption, selectedAwayName])
 
   let details = "";
 
