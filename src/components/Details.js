@@ -32,6 +32,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
     const item = items.find(item => item.team_id == value);
     setSelectedHomeOption(value);
     setSelectedHomeName(item.name);
+    getStats(leagueId, value, 'home');
   };
 
   const selectAwayTeamStat = evt => {
@@ -39,6 +40,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId}) => {
     const item = items.find(item => item.team_id == value);
     setSelectedAwayOption(value);
     setSelectedAwayName(item.name);
+    getStats(leagueId, value, 'away');
   };
 
   useEffect(() => {
