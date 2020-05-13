@@ -1,7 +1,6 @@
 import React from "react";
 import Leagues from './components/Leagues';
 import Details from './components/Details';
-import Stats from './components/Stats';
 
 function App() {
   return (
@@ -16,7 +15,6 @@ function App() {
               Pick the teams
             </div>
             <Details/>
-            <Stats/>
           </div>
         </div>
       </div>

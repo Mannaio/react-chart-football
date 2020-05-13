@@ -32,10 +32,11 @@ export const requestTeamsStat = (leagueId, teamId) => ({
   teamId
 });
 
-export const receivedTeamsStat = (json, type) => ({
+export const receivedTeamsStat = (json, type, name) => ({
   type: RECEIVE_TEAMS_STATS,
   json: json,
   teamtype: type,
+  teamname: name,
 });
 
 
@@ -127,7 +128,7 @@ export function getTeamsDetailById(id) {
 
 const collect = [];
 
-export function getTeamsStats(league, team, type) {
+export function getTeamsStats(league, team, type, name) {
   return function(dispatch) {
 
     const url = "https://www.api-football.com/demo/v2/statistics";
@@ -154,11 +155,11 @@ export function getTeamsStats(league, team, type) {
           const loseHome = teamsStatsLoseHome * -3;
           const loseAway = teamsStatsLoseAway * -1;
           const totalCal = winHome + winHAway + drawHome + drawAway + loseHome + loseAway
-          console.log('matchs:', matchsPlayed, type + ':', totalCal);
+          console.log('matchs:', matchsPlayed, name + ':', totalCal);
           const matchStats = {
             matchs: matchsPlayed,
             stats: totalCal,
-            team: type,
+            teamname: name,
           }
           collect.push(matchStats);
           console.log(collect)
@@ -166,7 +167,7 @@ export function getTeamsStats(league, team, type) {
             matchsPlayed,
             totalCal
            }
-          dispatch(receivedTeamsStat(teamStats, type));
+          dispatch(receivedTeamsStat(teamStats, type, name));
         })
         .catch(e => {
           console.log(e);

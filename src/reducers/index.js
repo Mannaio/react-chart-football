@@ -11,6 +11,7 @@ const initialState = {
   leagueId: [],
   leaguesList: [],
   teamsDetail: [],
+  teamname: [],
   teamsStats:[],
   isLeagueListLoading: false,
   isTeamsDetailLoading: false,
@@ -32,6 +33,9 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         [action.teamtype]:{
+          ...action.json
+        },
+        [action.teamname]:{
           ...action.json
         },
         ...action.json,
