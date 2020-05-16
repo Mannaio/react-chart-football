@@ -5,9 +5,12 @@ import {
   REQUEST_TEAMS_STATS,
   RECEIVE_TEAMS_STATS,
   RECEIVE_LEAGUE,
+  RECEIVE_FIRST_TEAM_NAME,
 } from "../actions";
 
 const initialState = {
+  firstTeamNameHome: [],
+  firstTeamNameAway: [],
   leagueId: [],
   leaguesList: [],
   teamsDetail: [],
@@ -47,6 +50,12 @@ const reducer = (state = initialState, action) => {
         teamsDetail: action.json,
         isTeamsDetailLoading: false
       };
+    case RECEIVE_FIRST_TEAM_NAME:
+      return {
+        ...state,
+        firstTeamNameHome: action.json,
+        firstTeamNameAway: action.json
+       };
     default:
       return state;
   }

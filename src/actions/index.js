@@ -3,6 +3,7 @@ export const REQUEST_LEAGUES_LIST = "REQUEST_LEAGUES_LIST";
 export const RECEIVE_LEAGUES_LIST = "RECEIVE_LEAGUES_LIST";
 // export const REQUEST_TEAMS_DETAIL = "REQUEST_TEAMS_DETAIL"
 export const RECEIVE_TEAMS_DETAIL = "RECEIVE_LEAGUE_DETAIL";
+export const RECEIVE_FIRST_TEAM_NAME = "RECEIVE_FIRST_TEAM_NAME";
 export const REQUEST_TEAMS_STATS = "REQUEST_TEAMS_STAT";
 export const RECEIVE_TEAMS_STATS = "RECEIVE_TEAMS_STATS";
 export const RECEIVE_LEAGUE = "RECEIVE_LEAGUE";
@@ -23,6 +24,11 @@ export const receivedLeaguesList = json => ({
 
 export const receivedTeamsDetail = json => ({
   type: RECEIVE_TEAMS_DETAIL,
+  json: json
+});
+
+export const receivedFirstTeamName = json => ({
+  type: RECEIVE_FIRST_TEAM_NAME,
   json: json
 });
 
@@ -74,7 +80,7 @@ export function fetchLeaguesList() {
           let leagues = res.data.api.leagues;
           /** To initially load the Leagues names in the Leagues component  */
           dispatch(receivedLeaguesList(leagues));
-          /** To initially load the first league details into the Details component, in the Select Option */
+          /** To initially load the first league details name  into the Details component, in the Select Option */
           dispatch(getTeamsDetailById(leagues[0].league_id));
           /** To initially load the first teams stats into the Stats component, San Paulo Team in this case */
         })
@@ -111,8 +117,12 @@ export function getTeamsDetailById(id) {
         .get(`https://www.api-football.com/demo/v2/teams/league/${id}`)
         .then(res => {
           let teams = res.data.api.teams;
+          let firstTeamNameHome = teams[0].name
+          let firstTeamNameAway = firstTeamNameHome
+          console.log('name:', firstTeamNameHome)
           /** This is used as first call to fectch the team names in the fetchLeaguesList*/
-          dispatch(receivedTeamsDetail(teams));
+        dispatch(receivedFirstTeamName(firstTeamNameHome, firstTeamNameAway));
+        dispatch(receivedTeamsDetail(teams));
           /** This is used to get the leagueId state when i want to get the team stats selected in Details Component */
           dispatch(receivedLeague(id));
           /* Get the first team stats anytime i click on a different league*/

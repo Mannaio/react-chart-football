@@ -2,30 +2,27 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 
-let Details = ({ teamsDetail, loading, getStats, leagueId, home={}, away={} }) => {
+let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, firstTeamNameAway, home={}, away={} }) => {
 
   const [selectedHomeOption, setSelectedHomeOption] = useState("");
   const [selectedAwayOption, setSelectedAwayOption] = useState("");
   const [selectedHomeName, setSelectedHomeName] = useState("");
   const [selectedAwayName, setSelectedAwayName] = useState("");
-
   const [items, setItemsName] = useState([teamsDetail]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const newItemsNames = teamsDetail;
     setItemsName(newItemsNames);
   }, [teamsDetail]);
 
-  // const selectHomeTeamStat = (evt) => {
-  //   const { value } = evt.target;
-  //   setSelectedHomeOption(value);
-  // }
-  //
-  // useEffect(() => {
-  //   debugger
-  //   const item = items.find((item) => item.team_id == selectedHomeOption);
-  //   getStats(leagueId, selectedHomeOption, item.name);
-  // }, [leagueId, items, selectedHomeOption]);
+  useEffect(() => {
+    const newFirstTeamHome = firstTeamNameHome;
+    const newFirstTeamAway = firstTeamNameAway;
+    setSelectedHomeName(newFirstTeamHome);
+    setSelectedAwayName(newFirstTeamAway);
+  },[firstTeamNameHome, firstTeamNameAway]);
+
 
   const selectHomeTeamStat = evt => {
     const { value } = evt.target;
@@ -46,10 +43,16 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, home={}, away={} }) =
     getStats(leagueId, selectedHomeOption, 'home', selectedHomeName);
   },[selectedHomeName, selectedHomeOption]);
 
+  // useEffect(() => {
+  //   setData([...data, 'Team Name:' + home.totalCal]);
+  // },[home.totalCal]);
+
   useEffect(() => {
-    console.log('Away Team name:', selectedAwayName, 'Away Team Option:', selectedAwayOption);
-    getStats(leagueId, selectedAwayOption, 'away', selectedAwayName);
-  },[selectedAwayOption, selectedAwayName])
+    setData([...data, 'Day:' + home.matchsPlayed, 'Team Name:' + home.totalCal]);
+  },[home.matchsPlayed, home.totalCal]);
+
+  console.log('data', [data]);
+
 
   let details = "";
 
@@ -119,8 +122,11 @@ const mapStateToProps = state => ({
   teamsDetail: state.teamsDetail,
   loading: state.isLeagueDetailLoading,
   leagueId: state.leagueId,
+  firstTeamNameHome: state.firstTeamNameHome,
+  firstTeamNameAway: state.firstTeamNameAway,
   home: state.home,
   away: state.away,
+  matchStats: state.matchStats
 });
 
 
