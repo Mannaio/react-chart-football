@@ -119,10 +119,10 @@ export function getTeamsDetailById(id) {
           let teams = res.data.api.teams;
           let firstTeamNameHome = teams[0].name
           let firstTeamNameAway = firstTeamNameHome
-          console.log('name:', firstTeamNameHome)
+          // console.log('name:', firstTeamNameHome)
           /** This is used as first call to fectch the team names in the fetchLeaguesList*/
-        dispatch(receivedFirstTeamName(firstTeamNameHome, firstTeamNameAway));
-        dispatch(receivedTeamsDetail(teams));
+          dispatch(receivedFirstTeamName(firstTeamNameHome, firstTeamNameAway));
+          dispatch(receivedTeamsDetail(teams));
           /** This is used to get the leagueId state when i want to get the team stats selected in Details Component */
           dispatch(receivedLeague(id));
           /* Get the first team stats anytime i click on a different league*/
@@ -165,7 +165,7 @@ export function getTeamsStats(league, team, type, name) {
           const loseHome = teamsStatsLoseHome * -3;
           const loseAway = teamsStatsLoseAway * -1;
           const totalCal = winHome + winHAway + drawHome + drawAway + loseHome + loseAway
-          console.log('matchs:', matchsPlayed, name + ':', totalCal);
+          console.log('matchs:', matchsPlayed, type + ':', totalCal);
           const matchStats = {
             matchs: matchsPlayed,
             stats: totalCal,
@@ -175,7 +175,8 @@ export function getTeamsStats(league, team, type, name) {
           console.log(collect)
           const teamStats = {
             matchsPlayed,
-            totalCal
+            totalCal,
+            name
            }
           dispatch(receivedTeamsStat(teamStats, type, name));
         })

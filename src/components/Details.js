@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, firstTeamNameAway, home={}, away={} }) => {
 
@@ -40,19 +41,26 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
 
   useEffect(() => {
     console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
-    getStats(leagueId, selectedHomeOption, 'home', selectedHomeName);
+    getStats(leagueId, selectedHomeOption, 'home');
   },[selectedHomeName, selectedHomeOption]);
 
-  // useEffect(() => {
-  //   setData([...data, 'Team Name:' + home.totalCal]);
-  // },[home.totalCal]);
+  useEffect(() => {
+    console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
+    getStats(leagueId, selectedAwayOption, 'away');
+  },[selectedAwayName, selectedAwayOption]);
 
   useEffect(() => {
-    setData([...data, 'Day:' + home.matchsPlayed, 'Team Name:' + home.totalCal]);
-  },[home.matchsPlayed, home.totalCal]);
+    setData(prev =>
+      prev.concat([
+        {
+          day: home.matchsPlayed,
+          [selectedHomeName]: home.totalCal
+        }
+      ])
+    );
+  }, [home.matchsPlayed, home.totalCal, selectedHomeName]);
 
   console.log('data', [data]);
-
 
   let details = "";
 
@@ -96,6 +104,23 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
                 <li>Calculation:{away.totalCal}</li>
                 <li>Total Matchs Played:{away.matchsPlayed}</li>
               </ul>
+            </div>
+            <div className="card-body text-decoration-none text-secondary">
+              <LineChart
+                width={500}
+                height={300}
+                data={data}
+                margin={{
+                  top: 5, right: 30, left: 20, bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type='monotone' dataKey={selectedHomeName} stroke='#c60000' activeDot={{fill: '#c60000', stroke: 'none', r: 6}}/>
+              </LineChart>
             </div>
           </div>
         </div>
