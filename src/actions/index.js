@@ -136,7 +136,7 @@ export function getTeamsDetailById(id) {
   };
 }
 
-const collect = [];
+// const collect = [];
 
 export function getTeamsStats(league, team, type, name) {
   return function(dispatch) {
@@ -144,7 +144,7 @@ export function getTeamsStats(league, team, type, name) {
     const url = "https://www.api-football.com/demo/v2/statistics";
     let dates = ["2019-08-30", "2019-09-30", "2019-10-30"];
     const getAllData = (dates, i) => {
-      return Promise.all(dates.map(x => url + '/' + league + '/' + team + '/' + x).map(fetchData));
+      return Promise.allSettled(dates.map(x => url + '/' + league + '/' + team + '/' + x).map(fetchData));
     }
 
     const fetchData = (URL) => {
@@ -165,14 +165,14 @@ export function getTeamsStats(league, team, type, name) {
           const loseHome = teamsStatsLoseHome * -3;
           const loseAway = teamsStatsLoseAway * -1;
           const totalCal = winHome + winHAway + drawHome + drawAway + loseHome + loseAway
-          console.log('matchs:', matchsPlayed, type + ':', totalCal);
+          // console.log('matchs:', matchsPlayed, type + ':', totalCal);
           const matchStats = {
             matchs: matchsPlayed,
             stats: totalCal,
             teamname: name,
           }
-          collect.push(matchStats);
-          console.log(collect)
+          // collect.push(matchStats);
+          // console.log(collect)
           const teamStats = {
             matchsPlayed,
             totalCal,

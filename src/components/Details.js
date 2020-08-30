@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, firstTeamNameAway, home={}, away={} }) => {
 
+  const [isStateDirtyHome, setStateDirtyHome] = useState(false);
+  const [isStateDirty, setStateDirty] = useState(false);
   const [selectedHomeOption, setSelectedHomeOption] = useState("");
   const [selectedAwayOption, setSelectedAwayOption] = useState("");
   const [selectedHomeName, setSelectedHomeName] = useState("");
@@ -30,6 +32,9 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
     const item = items.find(item => item.team_id == value);
     setSelectedHomeOption(value);
     setSelectedHomeName(item.name);
+    setData([]);
+    setStateDirtyHome(true);
+    // console.log('Data Array Select', data);
   };
 
   const selectAwayTeamStat = evt => {
@@ -40,27 +45,81 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
   };
 
   useEffect(() => {
-    console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
-    getStats(leagueId, selectedHomeOption, 'home');
-  },[selectedHomeName, selectedHomeOption]);
+    if(isStateDirtyHome) {
+      // console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
+      getStats(leagueId, selectedHomeOption, 'home');
+      setStateDirtyHome(false);
+    }
+  },[selectedHomeName, selectedHomeOption, home.matchsPlayed, home.totalCal]);
 
   useEffect(() => {
-    console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
+    // console.log('Away Team name:', selectedAwayName, 'Away Team Option:', selectedAwayOption);
     getStats(leagueId, selectedAwayOption, 'away');
   },[selectedAwayName, selectedAwayOption]);
 
-  useEffect(() => {
-    setData(prev =>
-      prev.concat([
-        {
-          day: home.matchsPlayed,
-          [selectedHomeName]: home.totalCal
-        }
-      ])
-    );
-  }, [home.matchsPlayed, home.totalCal, selectedHomeName]);
 
-  console.log('data', [data]);
+  useEffect(() => {
+
+     if (!home.matchsPlayed || !home.totalCal || !selectedHomeName) {
+       return ;
+     }
+
+     setData(prev =>
+       prev.concat([
+         {
+           day: home.matchsPlayed,
+           [selectedHomeName]: home.totalCal
+         }
+       ])
+     );
+
+   },[home.matchsPlayed, home.totalCal, selectedHomeName]);
+
+   useEffect(() => {
+
+      if (!away.matchsPlayed || !away.totalCal || !selectedAwayName) {
+        return ;
+      }
+
+      setData(prev =>
+        prev.concat([
+          {
+            day: away.matchsPlayed,
+            [selectedHomeName]: away.totalCal
+          }
+        ])
+      );
+
+    },[away.matchsPlayed, away.totalCal, selectedAwayName]);
+
+
+  //  useEffect(() => {
+  //
+  //   if (home.matchsPlayed || home.totalCal || selectedHomeName) {
+  //     setData(... data, []) ;
+  //   };
+  //
+  // },[home.matchsPlayed, home.totalCal, selectedHomeName]);
+
+   // useEffect(
+   //   () => {
+   //     setData(prev => [...prev, 'effect fn has been invoked'])
+   //   },
+   //   []
+   // )
+
+   console.log('Data Array', data);
+
+
+  // const useDidMountEffect = (func, deps) => {
+  //     const didMount = useRef(false);
+  //
+  //     useEffect(() => {
+  //         if (didMount.current) func();
+  //         else didMount.current = true;
+  //     }, deps);
+  // }
+
 
   let details = "";
 
