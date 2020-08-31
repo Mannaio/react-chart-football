@@ -144,7 +144,7 @@ export function getTeamsStats(league, team, type) {
     const url = "https://www.api-football.com/demo/v2/statistics";
     let dates = ["2019-08-30", "2019-09-30", "2019-10-30"];
     const getAllData = (dates, i) => {
-      return Promise.allSettled(dates.map(x => url + '/' + league + '/' + team + '/' + x).map(fetchData));
+      return Promise.all(dates.map(x => url + '/' + league + '/' + team + '/' + x).map(fetchData));
     }
 
     const fetchData = (URL) => {
@@ -167,7 +167,7 @@ export function getTeamsStats(league, team, type) {
 
           const totalCal = winHome + winHAway + drawHome + drawAway + loseHome + loseAway
           const matchsPlayed = teamsTotalMatchsPlayed;
-          
+
           const teamStats = {
             matchsPlayed,
             totalCal,

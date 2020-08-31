@@ -12,7 +12,8 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
   const [selectedHomeName, setSelectedHomeName] = useState("");
   const [selectedAwayName, setSelectedAwayName] = useState("");
   const [items, setItemsName] = useState([teamsDetail]);
-  const [data, setData] = useState([]);
+  const [dataHomeTeam, setDataHomeTeam] = useState([]);
+  const [dataAwayTeam, setDataAwayTeam] = useState([]);
 
   useEffect(() => {
     const newItemsNames = teamsDetail;
@@ -32,7 +33,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
     const item = items.find(item => item.team_id == value);
     setSelectedHomeOption(value);
     setSelectedHomeName(item.name);
-    setData([]);
+    setDataHomeTeam([]);
     setStateDirtyHome(true);
     // console.log('Data Array Select', data);
   };
@@ -64,7 +65,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
        return ;
      }
 
-     setData(prev =>
+     setDataHomeTeam(prev =>
        prev.concat([
          {
            day: home.matchsPlayed,
@@ -75,22 +76,22 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
 
    },[home.matchsPlayed, home.totalCal, selectedHomeName]);
 
-   useEffect(() => {
-
-      if (!away.matchsPlayed || !away.totalCal || !selectedAwayName) {
-        return ;
-      }
-
-      setData(prev =>
-        prev.concat([
-          {
-            day: away.matchsPlayed,
-            [selectedHomeName]: away.totalCal
-          }
-        ])
-      );
-
-    },[away.matchsPlayed, away.totalCal, selectedAwayName]);
+   // useEffect(() => {
+   //
+   //    if (!away.matchsPlayed || !away.totalCal || !selectedAwayName) {
+   //      return ;
+   //    }
+   //
+   //    setData(prev =>
+   //      prev.concat([
+   //        {
+   //          day: away.matchsPlayed,
+   //          [selectedHomeName]: away.totalCal
+   //        }
+   //      ])
+   //    );
+   //
+   //  },[away.matchsPlayed, away.totalCal, selectedAwayName]);
 
 
   //  useEffect(() => {
@@ -108,7 +109,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
    //   []
    // )
 
-   console.log('Data Array', data);
+   console.log('Data Array', dataHomeTeam);
 
 
   // const useDidMountEffect = (func, deps) => {
@@ -168,7 +169,24 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
               <LineChart
                 width={500}
                 height={300}
-                data={data}
+                data={dataHomeTeam}
+                margin={{
+                  top: 5, right: 30, left: 20, bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type='monotone' dataKey={selectedHomeName} stroke='#c60000' activeDot={{fill: '#c60000', stroke: 'none', r: 6}}/>
+              </LineChart>
+            </div>
+            <div className="card-body text-decoration-none text-secondary">
+              <LineChart
+                width={500}
+                height={300}
+                data={dataAwayTeam}
                 margin={{
                   top: 5, right: 30, left: 20, bottom: 5,
                 }}
