@@ -5,8 +5,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'r
 
 let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, firstTeamNameAway, home={}, away={} }) => {
 
-  const [isStateDirtyHome, setStateDirtyHome] = useState(false);
-  const [isStateDirty, setStateDirty] = useState(false);
+  const [isStateHomeTeam, setStateHomeTeam] = useState(false);
+  const [isStateAwayTeam, setStateAwayTeam] = useState(false);
   const [selectedHomeOption, setSelectedHomeOption] = useState("");
   const [selectedAwayOption, setSelectedAwayOption] = useState("");
   const [selectedHomeName, setSelectedHomeName] = useState("");
@@ -34,7 +34,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
     setSelectedHomeOption(value);
     setSelectedHomeName(item.name);
     setDataHomeTeam([]);
-    setStateDirtyHome(true);
+    setStateHomeTeam(true);
     // console.log('Data Array Select', data);
   };
 
@@ -43,19 +43,24 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
     const item = items.find(item => item.team_id == value);
     setSelectedAwayOption(value);
     setSelectedAwayName(item.name);
+    setDataAwayTeam([]);
+    setStateAwayTeam(true);
   };
 
   useEffect(() => {
-    if(isStateDirtyHome) {
+    if(isStateHomeTeam) {
       // console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
       getStats(leagueId, selectedHomeOption, 'home');
-      setStateDirtyHome(false);
+      setStateHomeTeam(false);
     }
   },[selectedHomeName, selectedHomeOption, home.matchsPlayed, home.totalCal]);
 
   useEffect(() => {
+    if(isStateAwayTeam) {
     // console.log('Away Team name:', selectedAwayName, 'Away Team Option:', selectedAwayOption);
-    getStats(leagueId, selectedAwayOption, 'away');
+      getStats(leagueId, selectedAwayOption, 'away');
+      setStateAwayTeam(false);
+    }
   },[selectedAwayName, selectedAwayOption]);
 
 
@@ -76,22 +81,22 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
 
    },[home.matchsPlayed, home.totalCal, selectedHomeName]);
 
-   // useEffect(() => {
-   //
-   //    if (!away.matchsPlayed || !away.totalCal || !selectedAwayName) {
-   //      return ;
-   //    }
-   //
-   //    setData(prev =>
-   //      prev.concat([
-   //        {
-   //          day: away.matchsPlayed,
-   //          [selectedHomeName]: away.totalCal
-   //        }
-   //      ])
-   //    );
-   //
-   //  },[away.matchsPlayed, away.totalCal, selectedAwayName]);
+   useEffect(() => {
+
+      if (!away.matchsPlayed || !away.totalCal || !selectedAwayName) {
+        return ;
+      }
+
+      setDataAwayTeam(prev =>
+        prev.concat([
+          {
+            day: away.matchsPlayed,
+            [selectedAwayName]: away.totalCal
+          }
+        ])
+      );
+
+    },[away.matchsPlayed, away.totalCal, selectedAwayName]);
 
 
   //  useEffect(() => {
@@ -110,6 +115,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
    // )
 
    console.log('Data Array', dataHomeTeam);
+   console.log('Data Array', dataAwayTeam);
 
 
   // const useDidMountEffect = (func, deps) => {
@@ -196,7 +202,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type='monotone' dataKey={selectedHomeName} stroke='#c60000' activeDot={{fill: '#c60000', stroke: 'none', r: 6}}/>
+                <Line type='monotone' dataKey={selectedAwayName} stroke='#c60000' activeDot={{fill: '#c60000', stroke: 'none', r: 6}}/>
               </LineChart>
             </div>
           </div>
