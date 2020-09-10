@@ -160,7 +160,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
             <div className="card-body text-decoration-none text-secondary">
               <ul>
                 <li>Team Name:{selectedHomeName}</li>
-                <li>Calculation:{home.totalCal}</li>
+                <li>Calculation:{home.teamtotalCal}</li>
                 <li>Total Matchs Played:{home.matchsPlayed}</li>
               </ul>
             </div>
@@ -234,7 +234,7 @@ const mapStateToProps = state => ({
   firstTeamNameAway: state.firstTeamNameAway,
   home: state.home,
   away: state.away,
-  matchStats: state.matchStats
+  teamStats: state.teamStats
 });
 
 

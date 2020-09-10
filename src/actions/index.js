@@ -159,28 +159,47 @@ export function getTeamsStats(league, team, type) {
           } = res.data.api.statistics.matchs;
 
           const winHome = teamsStatsWinHome * 0;
+
           const winHAway = teamsStatsWinAway * 2;
+
           const drawHome = teamsStatsDrawHome * -2;
+
           const drawAway = teamsStatsDrawAway * 0;
+
           const loseHome = teamsStatsLoseHome * -3;
+
           const loseAway = teamsStatsLoseAway * -1;
 
           const totalCal = winHome + winHAway + drawHome + drawAway + loseHome + loseAway
-          const matchsPlayed = teamsTotalMatchsPlayed;
+
+          const matchsPlayed = teamsTotalMatchsPlayed
 
           const teamStats = {
             matchsPlayed,
             totalCal,
             type
            }
-          dispatch(receivedTeamsStat(teamStats, type));
+
+           return teamStats;
+
+           console.log('Team Stats :', teamStats)
+
         })
+
         .catch(e => {
           console.log(e);
         });
     }
 
-    getAllData(dates).then(resp=>{console.log(resp)}).catch(e=>{console.log(e)})
+      getAllData(dates).then(resp => {
+          console.log(resp)
+
+          resp.map(teamStats => dispatch(receivedTeamsStat(teamStats, type)));
+
+
+      }).catch(e => {
+          console.log(e)
+      })
 
   }
 }
