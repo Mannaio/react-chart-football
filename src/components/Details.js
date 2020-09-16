@@ -79,7 +79,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
        ])
      );
 
-   },[home.matchsPlayed, home.totalCal, selectedHomeName]);
+   },[home.matchsPlayed, home.totalCal]);
 
    useEffect(() => {
 
@@ -96,7 +96,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
         ])
       );
 
-    },[away.matchsPlayed, away.totalCal, selectedAwayName]);
+    },[away.matchsPlayed, away.totalCal]);
 
 
   //  useEffect(() => {
@@ -160,7 +160,7 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
             <div className="card-body text-decoration-none text-secondary">
               <ul>
                 <li>Team Name:{selectedHomeName}</li>
-                <li>Calculation:{home.teamtotalCal}</li>
+                <li>Calculation:{home.totalCal}</li>
                 <li>Total Matchs Played:{home.matchsPlayed}</li>
               </ul>
             </div>
