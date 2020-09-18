@@ -74,8 +74,14 @@ export function fetchLeaguesList() {
           console.log(e);
         });
     } else {
-      return axios
-        .get("https://www.api-football.com/demo/v2/leagues/")
+      return axios({
+        method: "get",
+        url: "https://www.api-football.com/demo/v2/leagues/",
+        headers: {
+          "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+          "x-rapidapi-key": ""
+        }
+      })
         .then(res => {
           let leagues = res.data.api.leagues;
           /** To initially load the Leagues names in the Leagues component  */
@@ -113,8 +119,14 @@ export function getTeamsDetailById(id) {
           console.log(e);
         });
     } else {
-      return axios
-        .get(`https://www.api-football.com/demo/v2/teams/league/${id}`)
+      return axios({
+        method: "get",
+        url: `https://www.api-football.com/demo/v2/teams/league/${id}`,
+        headers: {
+          "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+          "x-rapidapi-key": ""
+        }
+      })
         .then(res => {
           let teams = res.data.api.teams;
           let firstTeamNameHome = teams[0].name
