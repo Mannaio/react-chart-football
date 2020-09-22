@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ref, useImperativeHandle, forwardRef } from "react";
 import { connect } from "react-redux";
 import { getTeamsStats } from "../actions";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, firstTeamNameAway, home={}, away={} }) => {
+let Details = ({ fowardedRef, teamsDetail, loading, getStats, leagueId, firstTeamNameHome, firstTeamNameAway, home={}, away={} }) => {
 
   const [isStateHomeTeam, setStateHomeTeam] = useState(false);
   const [isStateAwayTeam, setStateAwayTeam] = useState(false);
@@ -14,6 +14,17 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
   const [items, setItemsName] = useState([teamsDetail]);
   const [dataHomeTeam, setDataHomeTeam] = useState([]);
   const [dataAwayTeam, setDataAwayTeam] = useState([]);
+
+  const cleanValue = () => {
+    setDataHomeTeam([]);
+    setDataAwayTeam([]);
+  };
+
+  useImperativeHandle(fowardedRef, () => {
+    return {
+      cleanValue: cleanValue
+    };
+  });
 
   useEffect(() => {
     const newItemsNames = teamsDetail;
@@ -44,12 +55,12 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
     setSelectedAwayOption(value);
     setSelectedAwayName(item.name);
     setDataAwayTeam([]);
+
     setStateAwayTeam(true);
   };
 
   useEffect(() => {
     if(isStateHomeTeam) {
-      // console.log('Home Team name:', selectedHomeName, 'Home Team Option:', selectedHomeOption);
       getStats(leagueId, selectedHomeOption, 'home');
       setStateHomeTeam(false);
     }
@@ -99,34 +110,8 @@ let Details = ({ teamsDetail, loading, getStats, leagueId, firstTeamNameHome, fi
     },[away.matchsPlayed, away.totalCal]);
 
 
-  //  useEffect(() => {
-  //
-  //   if (home.matchsPlayed || home.totalCal || selectedHomeName) {
-  //     setData(... data, []) ;
-  //   };
-  //
-  // },[home.matchsPlayed, home.totalCal, selectedHomeName]);
-
-   // useEffect(
-   //   () => {
-   //     setData(prev => [...prev, 'effect fn has been invoked'])
-   //   },
-   //   []
-   // )
-
    console.log('Data Array', dataHomeTeam);
    console.log('Data Array', dataAwayTeam);
-
-
-  // const useDidMountEffect = (func, deps) => {
-  //     const didMount = useRef(false);
-  //
-  //     useEffect(() => {
-  //         if (didMount.current) func();
-  //         else didMount.current = true;
-  //     }, deps);
-  // }
-
 
   let details = "";
 
@@ -242,10 +227,12 @@ const mapDispatchToProps = {
   getStats: getTeamsStats,
 };
 
-Details = connect(
+const ConnectedDetails = connect(
   mapStateToProps,
   mapDispatchToProps,
   null
 )(Details);
 
-export default Details;
+export default forwardRef((props, ref) => {
+  return <ConnectedDetails {...props} fowardedRef={ref} />;
+});

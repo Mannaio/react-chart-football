@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {connect} from "react-redux";
 import {fetchLeaguesList, getTeamsDetailById, getTeamsStats} from "../actions";
 
@@ -17,6 +17,7 @@ let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail}
   let leagues = "";
   let dummyImage = "https://placeholder.pics/svg/640x480/ECEEFF-D0E3FF/FF0000-FFFFFF/Image%20not%20found";
 
+  const ref = useRef();
 
   if (leaguesList.length && teamsDetail.length) {
     leagues = leaguesList.map((item, index) => (
@@ -48,6 +49,7 @@ let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail}
   return (
     <div className="col-12 px-sm-1 col-lg-9 col-xl-8">
       <div className="row no-gutters">{leagues}</div>
+      <button onClick={() => ref.current.cleanValue()} type="button">Reset</button>
     </div>
   );
 };
