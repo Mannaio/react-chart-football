@@ -9,8 +9,7 @@ function App() {
   return (
     <div className="container">
       <div className="row mt-1 mt-sm-4 justify-content-center">
-        <Leagues />
-        <button onClick={() => ref.current.cleanValue()} type="button">Reset</button>
+        <Leagues onReset={() => ref.current.cleanValue()} />
       </div>
       <div className="row mt-1 mt-sm-1 justify-content-center mb-5">
         <div className="col-12 px-sm-1 col-lg-9 col-xl-8">

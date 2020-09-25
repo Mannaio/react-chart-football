@@ -3,14 +3,15 @@ import { useState, useEffect, useRef } from "react";
 import {connect} from "react-redux";
 import {fetchLeaguesList, getTeamsDetailById, getTeamsStats} from "../actions";
 
-let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail}) => {
+let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail, onReset}) => {
 
   useEffect(() => {
     getList();
   },[getList]);
 
-  const onClick = (evt, id) => {
+  const getNameClubs = (evt, id) => {
     evt.preventDefault();
+    onReset();
     getDetail(id);
   };
 
@@ -24,7 +25,7 @@ let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail}
       <div key={`${index}`} className="col-12 col-sm-6 p-2">
         <div className="card">
           <a href={`#${item.league_id}`}
-             onClick={(e) => onClick(e, item.league_id)}
+             onClick={(e) => getNameClubs(e, item.league_id)}
              className="card-body text-dark d-flex align-items-center text-decoration-none">
             <img src={item.flag ? item.flag : dummyImage} className="img-custom" alt={item.name}/>
             <span className="font-weight-bolder h5 mb-0 ellipsis text-uppercase">{item.name}</span>
@@ -49,7 +50,6 @@ let Leagues = ({getList, getStats, leaguesList, loading, getDetail, teamsDetail}
   return (
     <div className="col-12 px-sm-1 col-lg-9 col-xl-8">
       <div className="row no-gutters">{leagues}</div>
-      <button onClick={() => ref.current.cleanValue()} type="button">Reset</button>
     </div>
   );
 };
